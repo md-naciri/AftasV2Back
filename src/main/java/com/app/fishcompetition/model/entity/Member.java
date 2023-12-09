@@ -1,5 +1,6 @@
 package com.app.fishcompetition.model.entity;
 
+import com.app.fishcompetition.enums.IdentityDocumentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
