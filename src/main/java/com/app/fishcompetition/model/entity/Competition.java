@@ -1,14 +1,12 @@
 package com.app.fishcompetition.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,13 +21,14 @@ public class Competition {
     @GeneratedValue(generator = "uuid2")
     private UUID id;
 
+    @Column(unique = true)
     private String code;
 
     private Date date;
 
-    private Date startTime;
+    private Time startTime;
 
-    private Date endTime;
+    private Time endTime;
 
     private int numberOfParticipants;
 

@@ -1,0 +1,19 @@
+# Database configuration
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fish_competition
+    username: postgres
+    password: yassine
+
+  # Hibernate configuration
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+
+  # Liquibase configuration
+  liquibase:
+    change-log: classpath:db/changelog-master.xml

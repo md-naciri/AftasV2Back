@@ -21,9 +21,9 @@ public class Member {
     @GeneratedValue(generator = "uuid2")
     private UUID id;
 
-    private String name;
+    private String firstName;
 
-    private String familyName;
+    private String lastName;
 
     private Date accessDate;
 

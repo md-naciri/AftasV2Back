@@ -73,7 +73,7 @@
 					<url> jdbc:postgresql://localhost:5432/fish_competition</url>
 					<username>postgres</username>
 					<password>yassine</password>
-					<propertyFile>src/main/resources/application.properties</propertyFile>
+					<propertyFile>src/main/resources/application.yaml</propertyFile>
 					<propertyFileWillOverride>true</propertyFileWillOverride>
 					<changeLogFile>src/main/resources/db/changelog-master.xml</changeLogFile>
 					<outputChangeLogFile>src/main/resources/db/changelog/${maven.build.timestamp}_changelog.xml</outputChangeLogFile>

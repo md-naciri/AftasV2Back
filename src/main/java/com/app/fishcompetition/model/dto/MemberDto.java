@@ -21,8 +21,7 @@ public class MemberDto {
     private String familyName;
 
     @NotNull(message = "Access date cannot be null")
-    @PastOrPresent(message = "Access date must be in the past or present")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE) // to save only date without time
     private Date accessDate;
 
     @NotNull(message = "nationality cannot be null")
