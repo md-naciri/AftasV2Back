@@ -3,12 +3,11 @@ package com.app.fishcompetition.model.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
 @Entity
@@ -16,23 +15,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Competition {
+public class Hunting {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     private UUID id;
 
-    private String code;
+    private int numberOfFish;
 
-    private String date;
+    @ManyToOne
+    private Member member;
 
-    private String startTime;
+    @ManyToOne
+    private Fish fish;
 
-    private String endTime;
-
-    private int numberOfParticipants;
-
-    private String location;
-
-    @OneToMany(mappedBy = "competition")
-    private List<Ranking> rankings;
 }

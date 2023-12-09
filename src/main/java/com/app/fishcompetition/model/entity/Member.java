@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,7 +18,7 @@ import java.util.Date;
 public class Member {
     @Id
     @GeneratedValue(generator = "uuid2")
-    private Long id;
+    private UUID id;
 
     private String name;
 
