@@ -1,0 +1,102 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="ahmed (generated)" id="1702141884256-1">
+        <createTable tableName="member">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="member_pkey"/>
+            </column>
+            <column name="access_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="family_name" type="VARCHAR(255)"/>
+            <column name="identity_document_type" type="VARCHAR(255)"/>
+            <column name="identity_number" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="nationality" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-2">
+        <addUniqueConstraint columnNames="identity_number" constraintName="uk_2telb2ptxml1bbby2ooho5wn8" tableName="member"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-3">
+        <createTable tableName="competition">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="competition_pkey"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="date" type="VARCHAR(255)"/>
+            <column name="end_time" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="number_of_participants" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-4">
+        <createTable tableName="fish">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="fish_pkey"/>
+            </column>
+            <column name="average_weight" type="FLOAT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="level_id" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-5">
+        <createTable tableName="hunting">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="hunting_pkey"/>
+            </column>
+            <column name="number_of_fish" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fish_id" type="UUID"/>
+            <column name="member_id" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-6">
+        <createTable tableName="level">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="level_pkey"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="level" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="points" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-7">
+        <createTable tableName="ranking">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ranking_pkey"/>
+            </column>
+            <column name="rank" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="score" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competition_id" type="UUID"/>
+            <column name="member_id" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-8">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="ranking" constraintName="fk71val7a5reftq81x8yeku1q0l" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-9">
+        <addForeignKeyConstraint baseColumnNames="fish_id" baseTableName="hunting" constraintName="fkbpmhbnecx8ihw303fbaguj591" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="fish" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-10">
+        <addForeignKeyConstraint baseColumnNames="level_id" baseTableName="fish" constraintName="fkpkm97vf494x1jek79hig8xupf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="level" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-11">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="hunting" constraintName="fkrmu1xgsp6rgtnx43ths0gor6g" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1702141884256-12">
+        <addForeignKeyConstraint baseColumnNames="competition_id" baseTableName="ranking" constraintName="fksehdmj5xhpvqw80onckt9yrcg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="competition" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
