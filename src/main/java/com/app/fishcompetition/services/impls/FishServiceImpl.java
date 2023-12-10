@@ -27,7 +27,7 @@ public class FishServiceImpl implements FishService {
 
     @Override
     public Optional<Fish> getFishById(UUID fishId) {
-        return Optional.empty();
+        return fishRepository.findById(fishId);
     }
 
     @Override
@@ -46,6 +46,11 @@ public class FishServiceImpl implements FishService {
 
     @Override
     public void deleteFish(UUID fishId) {
-
+        Optional<Fish> fishToDelete = getFishById(fishId);
+        if(fishToDelete.isPresent()) {
+            fishRepository.delete(fishToDelete.get());
+        } else {
+            throw new NoSuchElementException("fish with id " + fishId + " does not exist");
+        }
     }
 }
