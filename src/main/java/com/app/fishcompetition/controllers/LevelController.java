@@ -1,6 +1,7 @@
 package com.app.fishcompetition.controllers;
 
 import com.app.fishcompetition.common.responses.RequestResponse;
+import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
 import com.app.fishcompetition.mapper.LevelDtoConverter;
 import com.app.fishcompetition.model.dto.LevelDto;
 import com.app.fishcompetition.model.entity.Level;
@@ -24,6 +25,7 @@ public class LevelController {
     private final LevelService levelService;
     private final RequestResponse requestResponse;
     private final LevelDtoConverter levelDtoConverter;
+    private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     @PostMapping("/level")
     public ResponseEntity<RequestResponse> createLevel(@Valid @RequestBody  LevelDto levelDto) {
         Level level = levelDtoConverter.convertDtoTOLevel(levelDto);

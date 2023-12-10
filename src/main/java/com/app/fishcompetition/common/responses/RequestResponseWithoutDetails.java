@@ -1,16 +1,13 @@
 package com.app.fishcompetition.common.responses;
 
-import lombok.*;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
-import java.util.Map;
 
+import lombok.Data;
+import org.springframework.stereotype.Component;
 @Data
 @Component
-public class RequestResponse {
+public class RequestResponseWithoutDetails {
     private LocalDateTime timestamp;
     private String message;
     private String status;
-    private Map<String,Object> details;
 }
