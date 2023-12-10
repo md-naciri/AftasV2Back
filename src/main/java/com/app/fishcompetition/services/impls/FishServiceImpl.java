@@ -1,13 +1,16 @@
 package com.app.fishcompetition.services.impls;
 
 import com.app.fishcompetition.model.entity.Fish;
+import com.app.fishcompetition.model.entity.Level;
 import com.app.fishcompetition.repositories.FishRepository;
 import com.app.fishcompetition.services.FishService;
+import com.app.fishcompetition.services.LevelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +19,7 @@ import java.util.UUID;
 public class FishServiceImpl implements FishService {
 
     private final FishRepository fishRepository;
+    private final LevelService levelService;
     @Override
     public List<Fish> getAllFish() {
         return null;
@@ -28,6 +32,10 @@ public class FishServiceImpl implements FishService {
 
     @Override
     public Fish addFish(Fish fish) {;
+        Optional<Level> levelById = levelService.getLevelById(fish.getLevel().getId()); ;
+        if (levelById.isEmpty()) {
+            throw new NoSuchElementException("Level with id: "+fish.getLevel().getId()+" not found");
+        }
         return fishRepository.save(fish);
     }
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +31,7 @@ public class FishController {
     private final RequestResponseWithDetails requestResponseWithDetails;
     @PostMapping("/fish")
     public ResponseEntity<RequestResponseWithDetails> addFish(@Valid @RequestBody FishDto fishDto) {
+
         Fish fish = fishDtoConverter.convertDtoToFish(fishDto);
         Fish savedFish = fishService.addFish(fish);
         Map<String,Object> response = new HashMap<>();

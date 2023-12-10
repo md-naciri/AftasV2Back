@@ -1,17 +1,14 @@
 package com.app.fishcompetition.model.dto;
 
-import com.app.fishcompetition.model.entity.Hunting;
-import com.app.fishcompetition.model.entity.Level;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.app.fishcompetition.util.UUIDDeserializerForLevelId;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.List;
+import java.util.UUID;
 
 @Data
 public class FishDto {
@@ -24,10 +21,8 @@ public class FishDto {
     @Min(value = 0, message = "Average weight must be greater than 0")
     private double averageWeight;
 
-    @OneToMany(mappedBy = "fish")
-    private List<Hunting> huntings;
 
     @NotNull(message = "Level is mandatory")
-    @ManyToOne
-    private Level level;
+    @JsonDeserialize(using = UUIDDeserializerForLevelId.class)
+    private UUID levelId;
 }
