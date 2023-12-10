@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @Component
-public class RequestResponse {
+public class RequestResponseWithDetails {
     private LocalDateTime timestamp;
     private String message;
     private String status;

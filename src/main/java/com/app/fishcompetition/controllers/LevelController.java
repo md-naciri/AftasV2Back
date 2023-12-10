@@ -1,6 +1,6 @@
 package com.app.fishcompetition.controllers;
 
-import com.app.fishcompetition.common.responses.RequestResponse;
+import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
 import com.app.fishcompetition.mapper.LevelDtoConverter;
 import com.app.fishcompetition.model.dto.LevelDto;
@@ -23,27 +23,27 @@ import java.util.UUID;
 public class LevelController {
 
     private final LevelService levelService;
-    private final RequestResponse requestResponse;
+    private final RequestResponseWithDetails requestResponseWithDetails;
     private final LevelDtoConverter levelDtoConverter;
     private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     @PostMapping("/level")
-    public ResponseEntity<RequestResponse> createLevel(@Valid @RequestBody  LevelDto levelDto) {
+    public ResponseEntity<RequestResponseWithDetails> createLevel(@Valid @RequestBody  LevelDto levelDto) {
         Level level = levelDtoConverter.convertDtoTOLevel(levelDto);
         Level createdLevel = levelService.addLevel(level);
-        requestResponse.setMessage("Levels created successfully");
-        requestResponse.setTimestamp(LocalDateTime.now());
-        requestResponse.setStatus("200");
+        requestResponseWithDetails.setMessage("Levels created successfully");
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
         Map<String,Object> response = new HashMap<>();
         response.put("level",createdLevel);
-        requestResponse.setDetails(response);
-        return ResponseEntity.ok().body(requestResponse);
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
     }
     @DeleteMapping("/level/{id}")
-    public ResponseEntity<RequestResponse> deleteLevel(@PathVariable("id") UUID id) {
+    public ResponseEntity<RequestResponseWithoutDetails> deleteLevel(@PathVariable("id") UUID id) {
         levelService.deleteLevel(id);
-        requestResponse.setMessage("Level deleted successfully");
-        requestResponse.setTimestamp(LocalDateTime.now());
-        requestResponse.setStatus("200");
-        return ResponseEntity.ok().body(requestResponse);
+        requestResponseWithoutDetails.setMessage("Level deleted successfully");
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("200");
+        return ResponseEntity.ok().body(requestResponseWithoutDetails);
     }
 }

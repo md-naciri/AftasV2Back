@@ -1,8 +1,6 @@
 package com.app.fishcompetition.common.exceptions;
 
-import com.app.fishcompetition.common.responses.RequestResponse;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
+import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,52 +18,52 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GlobalExceptionHandler {
 
-    private final RequestResponse requestResponse;
+    private final RequestResponseWithDetails requestResponseWithDetails;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RequestResponse> handleValidationExceptions(MethodArgumentNotValidException notValidException ) {
-        requestResponse.setTimestamp(LocalDateTime.now());
-        requestResponse.setMessage("Validation error");
-        requestResponse.setStatus("422");
+    public ResponseEntity<RequestResponseWithDetails> handleValidationExceptions(MethodArgumentNotValidException notValidException ) {
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("Validation error");
+        requestResponseWithDetails.setStatus("422");
         Map<String,Object> errors = notValidException.getBindingResult().getFieldErrors().stream()
                 .collect(
                         () -> new java.util.HashMap<>(),
                         (map, fieldError) -> map.put(fieldError.getField(), fieldError.getDefaultMessage()),
                         (map, map2) -> map.putAll(map2)
                 );
-        requestResponse.setDetails(errors);
-        return ResponseEntity.badRequest().body(requestResponse);
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.badRequest().body(requestResponseWithDetails);
     }
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<RequestResponse> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
-        requestResponse.setTimestamp(LocalDateTime.now());
-        requestResponse.setMessage("Data integrity violation");
-        requestResponse.setStatus("409");
+    public ResponseEntity<RequestResponseWithDetails> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("Data integrity violation");
+        requestResponseWithDetails.setStatus("409");
         Map<String,Object> errors = new HashMap<>();
         errors.put("duplicate key",dataIntegrityViolationException.getMessage());
-        requestResponse.setDetails(errors);
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(requestResponse);
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(requestResponseWithDetails);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RequestResponse> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
-        requestResponse.setTimestamp(LocalDateTime.now());
-        requestResponse.setMessage("Illegal argument");
-        requestResponse.setStatus("400");
+    public ResponseEntity<RequestResponseWithDetails> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("Illegal argument");
+        requestResponseWithDetails.setStatus("400");
         Map<String,Object> errors = new HashMap<>();
         errors.put("Error", illegalArgumentException.getMessage());
-        requestResponse.setDetails(errors);
-        return ResponseEntity.badRequest().body(requestResponse);
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.badRequest().body(requestResponseWithDetails);
     }
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<RequestResponse> handleNoSuchElementException(NoSuchElementException noSuchElementException) {
-        requestResponse.setTimestamp(LocalDateTime.now());
-        requestResponse.setMessage("No such element");
-        requestResponse.setStatus("404");
+    public ResponseEntity<RequestResponseWithDetails> handleNoSuchElementException(NoSuchElementException noSuchElementException) {
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("No such element");
+        requestResponseWithDetails.setStatus("404");
         Map<String,Object> errors = new HashMap<>();
         errors.put("Error", noSuchElementException.getMessage());
-        requestResponse.setDetails(errors);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(requestResponse);
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(requestResponseWithDetails);
     }
 
 }
