@@ -51,6 +51,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(requestResponse);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<RequestResponse> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+        requestResponse.setTimestamp(LocalDateTime.now());
+        requestResponse.setMessage("Illegal argument");
+        requestResponse.setStatus("400");
+        Map<String,Object> errors = new HashMap<>();
+        errors.put("Error", illegalArgumentException.getMessage());
+        requestResponse.setDetails(errors);
+        return ResponseEntity.badRequest().body(requestResponse);
+    }
     private String extractDuplicateField(String errorMessage) {
         String[] split = errorMessage.split(" ");
         String duplicateField = split[split.length - 1];
