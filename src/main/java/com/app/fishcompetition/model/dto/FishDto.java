@@ -9,10 +9,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.util.List;
 
-
+@Data
 public class FishDto {
 
     @NotBlank(message = "Name is mandatory")
@@ -26,7 +27,7 @@ public class FishDto {
     @OneToMany(mappedBy = "fish")
     private List<Hunting> huntings;
 
-    @NotBlank(message = "Level is mandatory")
+    @NotNull(message = "Level is mandatory")
     @ManyToOne
     private Level level;
 }
