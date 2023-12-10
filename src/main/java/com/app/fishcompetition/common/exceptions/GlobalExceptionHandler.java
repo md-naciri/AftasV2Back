@@ -1,6 +1,8 @@
 package com.app.fishcompetition.common.exceptions;
 
 import com.app.fishcompetition.common.responses.RequestResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,7 +22,7 @@ public class GlobalExceptionHandler {
     private final RequestResponse requestResponse;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RequestResponse> handleValidationExceptions(MethodArgumentNotValidException notValidException) {
+    public ResponseEntity<RequestResponse> handleValidationExceptions(MethodArgumentNotValidException notValidException ) {
         requestResponse.setTimestamp(LocalDateTime.now());
         requestResponse.setMessage("Validation error");
         requestResponse.setStatus("422");
@@ -39,15 +41,8 @@ public class GlobalExceptionHandler {
         requestResponse.setMessage("Data integrity violation");
         requestResponse.setStatus("409");
         Map<String,Object> errors = new HashMap<>();
-
-        String errorMessage = dataIntegrityViolationException.getMessage();
-        if (errorMessage.contains("duplicate key")) {
-            String duplicateField = extractDuplicateField(errorMessage);
-            errors.put("error", "Duplicate " + duplicateField + " found.");
-        } else {
-            errors.put("Error", errorMessage);
-        }
-
+        errors.put("duplicate key",dataIntegrityViolationException.getMessage());
+        requestResponse.setDetails(errors);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(requestResponse);
     }
 
@@ -61,10 +56,5 @@ public class GlobalExceptionHandler {
         requestResponse.setDetails(errors);
         return ResponseEntity.badRequest().body(requestResponse);
     }
-    private String extractDuplicateField(String errorMessage) {
-        String[] split = errorMessage.split(" ");
-        String duplicateField = split[split.length - 1];
-        duplicateField = duplicateField.substring(1, duplicateField.length() - 1);
-        return duplicateField;
-    }
+
 }

@@ -1,7 +1,10 @@
 package com.app.fishcompetition.services.impls;
 
 import com.app.fishcompetition.model.entity.Level;
+import com.app.fishcompetition.repositories.LevelRepository;
 import com.app.fishcompetition.services.LevelService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +12,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LevelServiceImpl implements LevelService {
+
+    private final LevelRepository levelRepository;
     @Override
     public List<Level> getAllLevels() {
         return null;
@@ -22,7 +28,7 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public Level addLevel(Level level) {
-        return null;
+        return levelRepository.save(level);
     }
 
     @Override

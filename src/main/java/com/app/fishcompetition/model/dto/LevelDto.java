@@ -8,21 +8,26 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class LevelDto {
 
+
     @NotBlank(message = "Code is required")
-    @Size(min = 3, message = "Code must be at least 3 characters long")
     private String code;
+
     @NotNull(message = "Level is required")
-    @Min(value = 10, message = "Level must be greater than 0")
+    @Min(value = 1,message = "Level must be greater than 0")
     private int level;
 
+    @NotBlank(message = "Description is required")
     private String description;
 
     @NotNull(message = "Points are required")
+    @Min(value = 1,message = "Points must be greater than 0")
     private int points;
 
     @OneToMany(mappedBy = "level")

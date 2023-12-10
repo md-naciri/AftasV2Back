@@ -20,11 +20,12 @@ public class Level {
     @Column(unique = true)
     private String code;
 
+    @Column(unique = true)
     private int level;
 
     private String description;
 
-
+    @Column(unique = true)
     private int points;
 
     @OneToMany(mappedBy = "level")
