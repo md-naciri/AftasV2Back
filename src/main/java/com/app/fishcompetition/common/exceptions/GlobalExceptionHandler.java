@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -55,6 +56,16 @@ public class GlobalExceptionHandler {
         errors.put("Error", illegalArgumentException.getMessage());
         requestResponse.setDetails(errors);
         return ResponseEntity.badRequest().body(requestResponse);
+    }
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<RequestResponse> handleNoSuchElementException(NoSuchElementException noSuchElementException) {
+        requestResponse.setTimestamp(LocalDateTime.now());
+        requestResponse.setMessage("No such element");
+        requestResponse.setStatus("404");
+        Map<String,Object> errors = new HashMap<>();
+        errors.put("Error", noSuchElementException.getMessage());
+        requestResponse.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(requestResponse);
     }
 
 }

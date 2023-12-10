@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.GlobalExceptionHandler;
 import com.app.fishcompetition.model.entity.Level;
 import com.app.fishcompetition.repositories.LevelRepository;
 import com.app.fishcompetition.services.LevelService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,7 +25,7 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public Optional<Level> getLevelById(UUID levelId) {
-        return Optional.empty();
+        return levelRepository.findById(levelId);
     }
 
     @Override
@@ -38,6 +40,11 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public void deleteLevel(UUID levelId) {
-
+       Optional<Level> levelToDelete = getLevelById(levelId);
+         if(levelToDelete.isPresent()) {
+           levelRepository.delete(levelToDelete.get());
+         } else {
+             throw new NoSuchElementException("Level with id " + levelId + " does not exist");
+         }
     }
 }

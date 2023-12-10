@@ -9,14 +9,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -36,6 +34,14 @@ public class LevelController {
         Map<String,Object> response = new HashMap<>();
         response.put("level",createdLevel);
         requestResponse.setDetails(response);
+        return ResponseEntity.ok().body(requestResponse);
+    }
+    @DeleteMapping("/level/{id}")
+    public ResponseEntity<RequestResponse> deleteLevel(@PathVariable("id") UUID id) {
+        levelService.deleteLevel(id);
+        requestResponse.setMessage("Level deleted successfully");
+        requestResponse.setTimestamp(LocalDateTime.now());
+        requestResponse.setStatus("200");
         return ResponseEntity.ok().body(requestResponse);
     }
 }
