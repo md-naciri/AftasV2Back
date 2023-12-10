@@ -4,6 +4,7 @@ import com.app.fishcompetition.model.entity.Fish;
 import com.app.fishcompetition.repositories.FishRepository;
 import com.app.fishcompetition.services.FishService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class FishServiceImpl implements FishService {
 
     private final FishRepository fishRepository;
@@ -26,8 +27,8 @@ public class FishServiceImpl implements FishService {
     }
 
     @Override
-    public Fish addFish(Fish fish) {
-        return null;
+    public Fish addFish(Fish fish) {;
+        return fishRepository.save(fish);
     }
 
     @Override
