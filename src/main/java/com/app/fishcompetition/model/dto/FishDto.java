@@ -1,5 +1,6 @@
 package com.app.fishcompetition.model.dto;
 
+import com.app.fishcompetition.model.entity.Level;
 import com.app.fishcompetition.util.UUIDDeserializerForLevelId;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.Min;
@@ -23,6 +24,5 @@ public class FishDto {
 
 
     @NotNull(message = "Level is mandatory")
-    @JsonDeserialize(using = UUIDDeserializerForLevelId.class)
-    private UUID levelId;
+    private Level level;
 }

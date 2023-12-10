@@ -14,7 +14,7 @@ public class UUIDDeserializerForLevelId extends JsonDeserializer<UUID> {
         try {
             return UUID.fromString(uuidString);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid UUID format");
+            throw new IllegalArgumentException("Invalid Level id format");
         }
     }
 }

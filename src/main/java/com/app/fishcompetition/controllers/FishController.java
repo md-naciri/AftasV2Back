@@ -37,6 +37,7 @@ public class FishController {
         Map<String,Object> response = new HashMap<>();
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("Fish added successfully");
+        requestResponseWithDetails.setStatus("200");
         response.put("Fish",savedFish);
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);

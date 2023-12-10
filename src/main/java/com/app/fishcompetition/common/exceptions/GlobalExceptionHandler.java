@@ -1,11 +1,13 @@
 package com.app.fishcompetition.common.exceptions;
 
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
+import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,7 +21,7 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
 
     private final RequestResponseWithDetails requestResponseWithDetails;
-
+    private final RequestResponseWithoutDetails  requestResponseWithoutDetails;
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RequestResponseWithDetails> handleValidationExceptions(MethodArgumentNotValidException notValidException ) {
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
@@ -65,5 +67,11 @@ public class GlobalExceptionHandler {
         requestResponseWithDetails.setDetails(errors);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(requestResponseWithDetails);
     }
-
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<RequestResponseWithoutDetails> customHandleNotReadable(HttpMessageNotReadableException ex) {
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("422");
+        requestResponseWithoutDetails.setMessage("Invalid level id");
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
+    }
 }
