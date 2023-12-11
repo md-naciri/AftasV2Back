@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.custom.CompetitionTimeException;
 import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.model.entity.Competition;
@@ -44,10 +45,15 @@ public class CompetitionServiceImpl implements CompetitionService {
     public Competition addCompetition(Competition competition)  {
        if(!checkIfDateIsAvailable(competition.getDate())){
               throw new DateNotAvailableException("date is not available :  date should be at least 2 months from now");
-       }else if(checkDateExistence(competition.getDate())){
+       }
+       else if(checkDateExistence(competition.getDate())){
               throw new DateNotAvailableException("date is not available :  there is already a competition on this date");
-       }else if(checkRangeBetweenEndAndStartTime(competition.getStartTime(), competition.getEndTime())){
-
+       }
+       else if(!checkIfEndTimeGrateThanStartTime(competition.getStartTime(), competition.getEndTime())){
+           throw  new CompetitionTimeException("competition time is not valid :  competition end time should be greater than start time");
+       }
+       else if(!checkRangeBetweenEndAndStartTime(competition.getStartTime(), competition.getEndTime())){
+           throw  new CompetitionTimeException("competition time is not valid :  competition time should be at least 1 hour");
        }
 
         competition.setNumberOfParticipants(0);
@@ -76,7 +82,10 @@ public class CompetitionServiceImpl implements CompetitionService {
         LocalTime startLocalTime = startTime.toLocalTime();
         LocalTime endLocalTime = endTime.toLocalTime();
         Duration duration = Duration.between(startLocalTime, endLocalTime);
-        return duration.toHours() > 1;
+        return duration.toMinutes() >= 60;
+    }
+    public boolean checkIfEndTimeGrateThanStartTime( Time startTime, Time endTime){
+        return startTime.before(endTime);
     }
 
 }
