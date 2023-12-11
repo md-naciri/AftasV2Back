@@ -1,5 +1,6 @@
 package com.app.fishcompetition.common.exceptions;
 
+import com.app.fishcompetition.common.exceptions.custom.CompetitionDateException;
 import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
@@ -83,5 +84,11 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setMessage(dateNotAvailableException.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
-
+   @ExceptionHandler(CompetitionDateException.class)
+    public ResponseEntity<RequestResponseWithoutDetails> handleCompetionDateException(CompetitionDateException competitionDateException){
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("400");
+        requestResponseWithoutDetails.setMessage(competitionDateException.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
+   }
 }
