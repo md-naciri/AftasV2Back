@@ -83,4 +83,5 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setMessage(dateNotAvailableException.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
+
 }

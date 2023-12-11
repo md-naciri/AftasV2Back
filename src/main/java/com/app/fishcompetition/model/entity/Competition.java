@@ -24,6 +24,7 @@ public class Competition {
     @Column(unique = true)
     private String code;
 
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     private Time startTime;

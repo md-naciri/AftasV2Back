@@ -55,8 +55,8 @@ public class CompetitionServiceImpl implements CompetitionService {
     public boolean checkIfDateIsAvailable(Date date){
         LocalDate givenDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
-        long monthsBetween = ChronoUnit.MONTHS.between(currentDate, givenDate);
-        return monthsBetween <= 2;
+        long daysBetween = ChronoUnit.DAYS.between(currentDate, givenDate);
+        return daysBetween <= 60;
     }
 
 }
