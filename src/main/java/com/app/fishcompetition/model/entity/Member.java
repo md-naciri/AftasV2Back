@@ -25,6 +25,7 @@ public class Member {
 
     private String lastName;
 
+
     private Date accessDate;
 
     private String nationality;

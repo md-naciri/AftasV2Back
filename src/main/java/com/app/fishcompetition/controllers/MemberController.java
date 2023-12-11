@@ -38,5 +38,5 @@ public class MemberController {
         response.put("member",memberToAdd);
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
-    } 
+    }
 }

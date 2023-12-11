@@ -16,15 +16,14 @@ import java.util.List;
 @Data
 public class MemberDto {
 
-    @NotBlank(message = "Name  is required")
+    @NotBlank(message = "first name  is required")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
-    private String name;
+    private String firstName;
 
-    @NotBlank(message = "Family name  is required")
+    @NotBlank(message = "last name name  is required")
     @Size(min = 2, max = 50, message = "Family name must be between 2 and 50 characters")
-    private String familyName;
+    private String lastName;
 
-    @NotNull(message = "Access date cannot be null")
     private Date accessDate;
 
     @NotBlank(message = "nationality  is mandatory")
