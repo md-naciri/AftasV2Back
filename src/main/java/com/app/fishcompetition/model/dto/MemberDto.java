@@ -4,29 +4,33 @@ import com.app.fishcompetition.enums.IdentityDocumentType;
 import com.app.fishcompetition.model.entity.Hunting;
 import com.app.fishcompetition.model.entity.Ranking;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class MemberDto {
-    @NotNull(message = "Name cannot be null")
+
+    @NotBlank(message = "Name  is required")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
 
-    @NotNull(message = "Family name cannot be null")
+    @NotBlank(message = "Family name  is required")
     @Size(min = 2, max = 50, message = "Family name must be between 2 and 50 characters")
     private String familyName;
 
     @NotNull(message = "Access date cannot be null")
-    @Temporal(TemporalType.DATE) // to save only date without time
     private Date accessDate;
 
-    @NotNull(message = "nationality cannot be null")
+    @NotBlank(message = "nationality  is mandatory")
     private String nationality;
-    @Enumerated(EnumType.STRING)
+
+    @NotNull(message = "Identity document type cannot be null")
     private IdentityDocumentType identityDocumentType;
 
     @NotNull(message = "Identity number cannot be null")
