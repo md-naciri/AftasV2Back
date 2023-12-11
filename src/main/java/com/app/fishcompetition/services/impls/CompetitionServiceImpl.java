@@ -32,6 +32,10 @@ public class CompetitionServiceImpl implements CompetitionService {
     public Optional<Competition> getCompetitionById(UUID competitionId) {
         return competitionRepository.findById(competitionId);
     }
+    @Override
+    public List<Competition> getCompetitionByDate(Date date) {
+        return  competitionRepository.findByDate(date);
+    }
 
     @Override
     public Competition addCompetition(Competition competition)  {
@@ -57,6 +61,9 @@ public class CompetitionServiceImpl implements CompetitionService {
         LocalDate currentDate = LocalDate.now();
         long daysBetween = ChronoUnit.DAYS.between(currentDate, givenDate);
         return daysBetween <= 60;
+    }
+    public boolean  checkDateExistence(Date date){
+        return competitionRepository.findByDate(date).size() > 0;
     }
 
 }
