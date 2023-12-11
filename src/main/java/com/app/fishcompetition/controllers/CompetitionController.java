@@ -28,7 +28,7 @@ public class CompetitionController {
     private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     private final RequestResponseWithDetails  requestResponseWithDetails ;
     private final CompetitionDtoConverter competitionDtoConverter;
-    @PostMapping("/competitions")
+    @PostMapping("/competition")
     public ResponseEntity<RequestResponseWithDetails> addCompetition(@Valid @RequestBody CompetitionDto competitionDto){
 
         Map<String,Object> response = new HashMap<>();

@@ -74,4 +74,5 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setMessage("Invalid level id");
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
+
 }

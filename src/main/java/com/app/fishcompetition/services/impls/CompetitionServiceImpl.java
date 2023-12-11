@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +32,11 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Competition addCompetition(Competition competition) {
-        return null;
+       if(!checkIfDateIsAvailable(competition.getDate())){
+                throw new RuntimeException("Date is not available");
+       }
+        competition.setNumberOfParticipants(0);
+        return competitionRepository.save(competition);
     }
 
     @Override
@@ -40,4 +48,11 @@ public class CompetitionServiceImpl implements CompetitionService {
     public void deleteCompetition(UUID competitionId) {
 
     }
+    public boolean checkIfDateIsAvailable(Date date){
+        LocalDate givenDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+        long monthsBetween = ChronoUnit.MONTHS.between(currentDate, givenDate);
+        return monthsBetween <= 2;
+    }
+
 }

@@ -30,6 +30,7 @@ public class Competition {
 
     private Time endTime;
 
+    @Column(columnDefinition = "int default 0")
     private int numberOfParticipants;
 
     private String location;
