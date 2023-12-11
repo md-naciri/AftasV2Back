@@ -2,6 +2,7 @@ package com.app.fishcompetition.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Level {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -23,6 +25,7 @@ public class Level {
     @Column(unique = true)
     private int level;
 
+    @Column(length = 500)
     private String description;
 
     @Column(unique = true)
