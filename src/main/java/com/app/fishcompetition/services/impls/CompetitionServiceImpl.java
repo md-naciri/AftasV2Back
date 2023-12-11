@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -41,6 +44,10 @@ public class CompetitionServiceImpl implements CompetitionService {
     public Competition addCompetition(Competition competition)  {
        if(!checkIfDateIsAvailable(competition.getDate())){
               throw new DateNotAvailableException("date is not available :  date should be at least 2 months from now");
+       }else if(checkDateExistence(competition.getDate())){
+              throw new DateNotAvailableException("date is not available :  there is already a competition on this date");
+       }else if(checkRangeBetweenEndAndStartTime(competition.getStartTime(), competition.getEndTime())){
+
        }
 
         competition.setNumberOfParticipants(0);
@@ -64,6 +71,12 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
     public boolean  checkDateExistence(Date date){
         return competitionRepository.findByDate(date).size() > 0;
+    }
+    public boolean checkRangeBetweenEndAndStartTime(Time startTime, Time endTime){
+        LocalTime startLocalTime = startTime.toLocalTime();
+        LocalTime endLocalTime = endTime.toLocalTime();
+        Duration duration = Duration.between(startLocalTime, endLocalTime);
+        return duration.toHours() > 1;
     }
 
 }

@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RequestResponseWithoutDetails> customHandleNotReadable(HttpMessageNotReadableException ex) {
         requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithoutDetails.setStatus("422");
-        requestResponseWithoutDetails.setMessage("Invalid level id");
+        requestResponseWithoutDetails.setMessage("please enter a valid date");
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
 
@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
    @ExceptionHandler(CompetitionDateException.class)
-    public ResponseEntity<RequestResponseWithoutDetails> handleCompetionDateException(CompetitionDateException competitionDateException){
+    public ResponseEntity<RequestResponseWithoutDetails> handleCompetitionDateException(CompetitionDateException competitionDateException){
         requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithoutDetails.setStatus("400");
         requestResponseWithoutDetails.setMessage(competitionDateException.getMessage());
