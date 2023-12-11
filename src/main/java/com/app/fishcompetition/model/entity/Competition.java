@@ -34,6 +34,8 @@ public class Competition {
 
     private String location;
 
+    private Double amount;
+
     @OneToMany(mappedBy = "competition")
     private List<Ranking> rankings;
 }

@@ -32,6 +32,9 @@ public class CompetitionDto {
     @NotBlank(message = "Location cannot be blank")
     private String location;
 
+    @NotNull(message = "Amount cannot be null")
+    @Min(value = 1, message = "Amount must be greater than 0")
+    private Double amount;
     @OneToMany(mappedBy = "competition")
     private List<Ranking> rankings;
 }

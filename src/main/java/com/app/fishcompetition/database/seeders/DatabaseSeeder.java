@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DatabaseSeeder {
     private final LevelSeeder levelSeeder;
-
+    private final FishSeeder fishSeeder;
     @PostConstruct
     public void init() {
         levelSeeder.seed();
+        fishSeeder.seed();
     }
 }
