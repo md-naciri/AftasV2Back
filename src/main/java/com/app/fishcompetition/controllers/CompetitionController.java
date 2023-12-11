@@ -1,5 +1,6 @@
 package com.app.fishcompetition.controllers;
 
+import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
 import com.app.fishcompetition.mapper.CompetitionDtoConverter;
@@ -29,7 +30,7 @@ public class CompetitionController {
     private final RequestResponseWithDetails  requestResponseWithDetails ;
     private final CompetitionDtoConverter competitionDtoConverter;
     @PostMapping("/competition")
-    public ResponseEntity<RequestResponseWithDetails> addCompetition(@Valid @RequestBody CompetitionDto competitionDto){
+    public ResponseEntity<RequestResponseWithDetails> addCompetition(@Valid @RequestBody CompetitionDto competitionDto)  {
 
         Map<String,Object> response = new HashMap<>();
         Competition competition = competitionService.addCompetition(competitionDtoConverter.convertDtoTOCompetition(competitionDto));

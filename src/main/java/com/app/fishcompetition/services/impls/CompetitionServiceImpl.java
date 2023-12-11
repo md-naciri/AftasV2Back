@@ -1,5 +1,7 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
+import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.repositories.CompetitionRepository;
 import com.app.fishcompetition.services.CompetitionService;
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class CompetitionServiceImpl implements CompetitionService {
 
     private final CompetitionRepository competitionRepository;
+    private final RequestResponseWithDetails requestResponseWithDetails;;
     @Override
     public List<Competition> getAllCompetitions() {
         return null;
@@ -31,10 +34,11 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Competition addCompetition(Competition competition) {
+    public Competition addCompetition(Competition competition)  {
        if(!checkIfDateIsAvailable(competition.getDate())){
-                throw new RuntimeException("Date is not available");
+              throw new DateNotAvailableException("date is not available :  date should be at least 2 months from now");
        }
+
         competition.setNumberOfParticipants(0);
         return competitionRepository.save(competition);
     }

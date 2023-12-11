@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services;
 
+import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.model.entity.Competition;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public interface CompetitionService {
 
     Optional<Competition> getCompetitionById(UUID competitionId);
 
-    Competition addCompetition(Competition competition);
+    Competition addCompetition(Competition competition) ;
 
     Competition updateCompetition(UUID competitionId, Competition competition);
 
