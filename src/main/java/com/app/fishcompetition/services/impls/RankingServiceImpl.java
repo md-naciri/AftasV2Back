@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.custom.MemberCompetitionAlreadyExistException;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Member;
 import com.app.fishcompetition.model.entity.Ranking;
@@ -40,7 +41,7 @@ public class RankingServiceImpl  implements RankingService {
             }else if (!checkIfCompetitionExist(ranking.getCompetition().getId())){
                 throw  new NoSuchElementException("competition not exist");
             }else if (checkIfUserAlreadyRankedWithSameCompetition(ranking.getMember().getId(), ranking.getCompetition().getId())){
-                throw  new NoSuchElementException("user already ranked with same competition");
+                throw  new MemberCompetitionAlreadyExistException("member already ranked with same competition");
             }else{
                 ranking.setRank(1);
                 ranking.setScore(0);

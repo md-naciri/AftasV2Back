@@ -3,6 +3,7 @@ package com.app.fishcompetition.common.exceptions;
 import com.app.fishcompetition.common.exceptions.custom.CompetitionDateException;
 import com.app.fishcompetition.common.exceptions.custom.CompetitionTimeException;
 import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
+import com.app.fishcompetition.common.exceptions.custom.MemberCompetitionAlreadyExistException;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +98,13 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithoutDetails.setStatus("400");
         requestResponseWithoutDetails.setMessage(competitionTimeException.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
+    }
+    @ExceptionHandler(MemberCompetitionAlreadyExistException.class)
+    public ResponseEntity<RequestResponseWithoutDetails> handleMemberCompetitionAlreadyExistException(MemberCompetitionAlreadyExistException memberCompetitionAlreadyExistException){
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("422");
+        requestResponseWithoutDetails.setMessage(memberCompetitionAlreadyExistException.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
 }
