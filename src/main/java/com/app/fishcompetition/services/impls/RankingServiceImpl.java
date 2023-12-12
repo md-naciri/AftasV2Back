@@ -1,8 +1,10 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Member;
 import com.app.fishcompetition.model.entity.Ranking;
 import com.app.fishcompetition.repositories.RankingRepository;
+import com.app.fishcompetition.services.CompetitionService;
 import com.app.fishcompetition.services.MemberService;
 import com.app.fishcompetition.services.RankingService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class RankingServiceImpl  implements RankingService {
 
     private final RankingRepository rankingRepository;
     private final MemberService memberService;
+    private final CompetitionService competitionService;
     @Override
     public List<Ranking> getRankings() {
         return null;
@@ -46,5 +49,9 @@ public class RankingServiceImpl  implements RankingService {
     public boolean checkIfMemberExiste(UUID memberId){
         Optional<Member> member = memberService.getMemberById(memberId); ;
         return member.isPresent();
+    }
+    public boolean checkIfCompetitionExiste(UUID competitionId){
+        Optional<Competition> Competition = competitionService.getCompetitionById(competitionId);
+        return Competition.isPresent();
     }
 }
