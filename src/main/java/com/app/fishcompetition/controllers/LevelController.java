@@ -38,6 +38,16 @@ public class LevelController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+    @GetMapping("/levels")
+    public ResponseEntity<RequestResponseWithDetails> getAllLevels() {
+        requestResponseWithDetails.setMessage("Levels retrieved successfully");
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        Map<String,Object> response = new HashMap<>();
+        response.put("levels",levelService.getAllLevels());
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
     @DeleteMapping("/level/{id}")
     public ResponseEntity<RequestResponseWithoutDetails> deleteLevel(@PathVariable("id") UUID id) {
         levelService.deleteLevel(id);

@@ -20,7 +20,7 @@ public class LevelServiceImpl implements LevelService {
     private final LevelRepository levelRepository;
     @Override
     public List<Level> getAllLevels() {
-        return null;
+        return levelRepository.findAll();
     }
 
     @Override
