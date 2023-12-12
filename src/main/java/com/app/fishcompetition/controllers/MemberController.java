@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class MemberController {
     private final RequestResponseWithoutDetails requestResponseWithoutDetails;;
    private final MemberService memberService;;
    private final MemberDtoConverter memberDtoConverter;;
+
     @RequestMapping ("/member")
     public ResponseEntity<RequestResponseWithDetails> addMember(@Valid  @RequestBody MemberDto memberDto) {
         Map<String,Object> response = new HashMap<>();;
@@ -36,6 +38,17 @@ public class MemberController {
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         response.put("member",memberToAdd);
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
+
+    @GetMapping("/members")
+    public ResponseEntity<RequestResponseWithDetails> getAllMembers() {
+        Map<String,Object> response = new HashMap<>();;
+        requestResponseWithDetails.setMessage("Members retrieved successfully");
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        response.put("members",memberService.getAllMembers());
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }

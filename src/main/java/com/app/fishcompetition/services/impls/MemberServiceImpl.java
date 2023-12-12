@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     @Override
     public List<Member> getAllMembers() {
-        return null;
+        return memberRepository.findAll();
     }
 
     @Override
