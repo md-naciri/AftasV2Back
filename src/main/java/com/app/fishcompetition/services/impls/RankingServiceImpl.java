@@ -2,11 +2,13 @@ package com.app.fishcompetition.services.impls;
 
 import com.app.fishcompetition.model.entity.Ranking;
 import com.app.fishcompetition.services.RankingService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class RankingServiceImpl  implements RankingService {
 
     @Override
