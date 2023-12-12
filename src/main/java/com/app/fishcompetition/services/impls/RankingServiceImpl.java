@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,7 +35,17 @@ public class RankingServiceImpl  implements RankingService {
 
     @Override
     public Ranking addRanking(Ranking ranking) {
-
+            if(!checkIfMemberExist(ranking.getMember().getId())){
+                throw  new NoSuchElementException("member not exist");
+            }else if (!checkIfCompetitionExist(ranking.getCompetition().getId())){
+                throw  new NoSuchElementException("competition not exist");
+            }else if (checkIfUserAlreadyRankedWithSameCompetition(ranking.getMember().getId(), ranking.getCompetition().getId())){
+                throw  new NoSuchElementException("user already ranked with same competition");
+            }else{
+                ranking.setRank(1);
+                ranking.setScore(0);
+                return rankingRepository.save(ranking);
+            }
     }
 
     @Override
@@ -46,12 +57,20 @@ public class RankingServiceImpl  implements RankingService {
     public void deleteRanking(UUID id) {
 
     }
-    public boolean checkIfMemberExiste(UUID memberId){
+    public boolean checkIfMemberExist(UUID memberId){
         Optional<Member> member = memberService.getMemberById(memberId); ;
         return member.isPresent();
     }
-    public boolean checkIfCompetitionExiste(UUID competitionId){
+    public boolean checkIfCompetitionExist(UUID competitionId){
         Optional<Competition> Competition = competitionService.getCompetitionById(competitionId);
         return Competition.isPresent();
     }
+    public boolean checkIfUserAlreadyRankedWithSameCompetition(UUID memberId, UUID competitionId){
+        return findByMemberIdAndCompetitionId(memberId, competitionId);
+    }
+    public boolean findByMemberIdAndCompetitionId(UUID memberId, UUID competitionId){
+        Optional<Ranking> ranking = rankingRepository.findByMemberIdAndCompetitionId(memberId, competitionId);
+        return ranking.isPresent();
+    }
+
 }

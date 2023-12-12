@@ -26,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Optional<Member> getMemberById(UUID memberId) {
-        return Optional.empty();
+        return memberRepository.findById(memberId);
     }
 
     @Override
