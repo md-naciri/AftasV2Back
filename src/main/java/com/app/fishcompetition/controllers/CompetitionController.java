@@ -11,10 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -41,5 +38,17 @@ public class CompetitionController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
 
+    }
+    @GetMapping("/competitions")
+    public ResponseEntity<RequestResponseWithDetails> getAllCompetitions()  {
+
+        Map<String,Object> response = new HashMap<>();
+        Iterable<Competition> competitions = competitionService.getAllCompetitions();
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("competitions retrieved successfully");
+        requestResponseWithDetails.setStatus("200");
+        response.put("Competitions",competitions);
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
     }
 }
