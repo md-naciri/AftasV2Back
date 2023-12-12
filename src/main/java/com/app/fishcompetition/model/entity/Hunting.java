@@ -1,5 +1,6 @@
 package com.app.fishcompetition.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,9 +24,11 @@ public class Hunting {
 
     private int numberOfFish;
 
+    @JsonBackReference
     @ManyToOne
     private Member member;
 
+    @JsonBackReference
     @ManyToOne
     private Fish fish;
 

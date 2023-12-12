@@ -1,5 +1,6 @@
 package com.app.fishcompetition.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,11 @@ public class Ranking {
 
     private int score;
 
+    @JsonBackReference
     @ManyToOne
     private Member member;
 
+    @JsonBackReference
     @ManyToOne
     private Competition competition;
 }

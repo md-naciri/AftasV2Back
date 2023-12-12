@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,7 +44,7 @@ public class CompetitionController {
     public ResponseEntity<RequestResponseWithDetails> getAllCompetitions()  {
 
         Map<String,Object> response = new HashMap<>();
-        Iterable<Competition> competitions = competitionService.getAllCompetitions();
+        List<Competition> competitions = competitionService.getAllCompetitions();
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("competitions retrieved successfully");
         requestResponseWithDetails.setStatus("200");
