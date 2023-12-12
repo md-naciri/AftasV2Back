@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.custom.HuntingAllReadyExistException;
 import com.app.fishcompetition.model.entity.Hunting;
 import com.app.fishcompetition.repositories.HuntingRepository;
 import com.app.fishcompetition.services.HuntingService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +18,8 @@ import java.util.UUID;
 public class HuntingServiceImpl implements HuntingService {
 
     private final HuntingRepository huntingRepository;
+    private final MemberServiceImpl memberService;
+    private final FishServiceImpl fishService;
     @Override
     public List<Hunting> getAllHunting() {
         return null;
@@ -29,9 +33,15 @@ public class HuntingServiceImpl implements HuntingService {
     @Override
     public Hunting addHunting(Hunting hunting) {
         if(checkIfHuntingForTheSameMemberAndSameFish(hunting.getMember().getId(),hunting.getFish().getId())){
-            throw new RuntimeException("Hunting for the same member and same fish already exists");
+            throw new HuntingAllReadyExistException("Hunting for the same member and same fish already exists");
+        }else if(!checkIfMemberExist(hunting.getMember().getId())) {
+            throw new NoSuchElementException("Member does that you entered not exist");
+        }else if(!checkIfFishExist(hunting.getFish().getId())){
+            throw new NoSuchElementException("Fish that you entered not exist");
+        }else{
+            return huntingRepository.save(hunting);
         }
-        return huntingRepository.save(hunting);
+
     }
 
     @Override
@@ -48,5 +58,11 @@ public class HuntingServiceImpl implements HuntingService {
     }
     public Optional<Hunting> getHuntingByMemberIdAndFishId(UUID memberId, UUID fishId){
         return huntingRepository.findByMemberIdAndFishId(memberId,fishId);
+    }
+    public boolean checkIfMemberExist(UUID memberId){
+        return memberService.getMemberById(memberId).isPresent();
+    }
+    public boolean checkIfFishExist(UUID fishId){
+        return fishService.getFishById(fishId).isPresent();
     }
 }
