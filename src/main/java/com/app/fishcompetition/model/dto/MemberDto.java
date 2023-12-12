@@ -31,7 +31,6 @@ public class MemberDto {
     private String nationality;
 
     @NotNull(message = "Identity document type cannot be null")
-    @ValidIdentityDocumentType(message = "Invalid identity document type. Allowed values are DRIVING_LICENSE, IDENTITY_CARD, PASSPORT")
     private IdentityDocumentType identityDocumentType;
 
     @NotNull(message = "Identity number cannot be null")
