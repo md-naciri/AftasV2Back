@@ -31,11 +31,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member addMember(Member member) {
-        try {
-            IdentityDocumentType.valueOf(member.getIdentityDocumentType().toString());
-        } catch (IllegalArgumentException e) {
-            throw  new IllegalArgumentException("identity document type should be one of the following: " + IdentityDocumentType.values());
-        }
+
         if(member.getAccessDate() != null) {
             if (!checkValidateAccessDate(member.getAccessDate())) {
                 throw new DateNotAvailableException("access date should equal currentDate");
