@@ -22,7 +22,7 @@ public class FishServiceImpl implements FishService {
     private final LevelService levelService;
     @Override
     public List<Fish> getAllFish() {
-        return null;
+        return fishRepository.findAll();
     }
 
     @Override

@@ -39,6 +39,17 @@ public class FishController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+
+    @GetMapping("/fish")
+    public ResponseEntity<RequestResponseWithDetails> getAllFish() {
+        Map<String,Object> response = new HashMap<>();
+        response.put("All Fish",fishService.getAllFish());
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("Fish retrieved successfully");
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
     @DeleteMapping("/fish/{id}")
     public ResponseEntity<RequestResponseWithoutDetails> deleteFish(@PathVariable  UUID id) {
         fishService.deleteFish(id);
