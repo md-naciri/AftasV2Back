@@ -18,6 +18,7 @@ public class CompetitionDto {
     private String code;
 
     @NotNull(message = "Date cannot be null")
+    @Future(message = "Date must be in the future")
     private Date date;
 
     @NotNull(message = "Start time cannot be null")
