@@ -37,9 +37,7 @@ public class MemberDto {
     @Size(min = 2, max = 50, message = "Identity number must be between 2 and 50 characters")
     private String identityNumber;
 
-    @OneToMany(mappedBy = "member")
     private List<Ranking> rankings;
 
-    @OneToMany(mappedBy = "member")
     private List<Hunting> huntings;
 }

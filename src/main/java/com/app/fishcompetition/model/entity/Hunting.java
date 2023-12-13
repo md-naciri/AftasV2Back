@@ -30,4 +30,6 @@ public class Hunting {
     @ManyToOne
     private Fish fish;
 
+    @ManyToOne
+    private Competition competition;
 }

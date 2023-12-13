@@ -1,5 +1,6 @@
 package com.app.fishcompetition.model.dto;
 
+import com.app.fishcompetition.model.entity.Hunting;
 import com.app.fishcompetition.model.entity.Ranking;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Future;
@@ -37,6 +38,7 @@ public class CompetitionDto {
     @Min(value = 1, message = "Amount must be greater than 0")
     private Double amount;
 
-    @OneToMany(mappedBy = "competition")
     private List<Ranking> rankings;
+
+    private List<Hunting> huntings;
 }

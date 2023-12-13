@@ -30,6 +30,5 @@ public class LevelDto {
     @Min(value = 1,message = "Points must be greater than 0")
     private int points;
 
-    @OneToMany(mappedBy = "level")
     private List<Fish> fishes;
 }

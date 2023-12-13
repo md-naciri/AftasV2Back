@@ -44,4 +44,7 @@ public class Competition {
 
     @OneToMany(mappedBy = "competition")
     private List<Ranking> rankings;
+
+    @OneToMany(mappedBy = "competition")
+    private List<Hunting> huntings;
 }
