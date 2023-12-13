@@ -2,6 +2,7 @@ package com.app.fishcompetition.mapper;
 
 import com.app.fishcompetition.model.dto.CompetitionDto;
 import com.app.fishcompetition.model.entity.Competition;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

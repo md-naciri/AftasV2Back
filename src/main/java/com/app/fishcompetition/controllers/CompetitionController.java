@@ -7,6 +7,7 @@ import com.app.fishcompetition.mapper.CompetitionDtoConverter;
 import com.app.fishcompetition.model.dto.CompetitionDto;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.services.CompetitionService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class CompetitionController {
     private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     private final RequestResponseWithDetails  requestResponseWithDetails ;
     private final CompetitionDtoConverter competitionDtoConverter;
+    private ObjectMapper mapper;
     @PostMapping("/competition")
     public ResponseEntity<RequestResponseWithDetails> addCompetition(@Valid @RequestBody CompetitionDto competitionDto)  {
 

@@ -18,6 +18,7 @@ public class HuntingDto {
     @ManyToOne
     private Member member;
 
+
     @NotNull(message = "Fish is required")
     @ManyToOne
     private Fish fish;

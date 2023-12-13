@@ -11,6 +11,7 @@ import lombok.Data;
 public class RankingDto {
 
 
+
     @NotNull(message = "Member is mandatory")
     private Member member;
 

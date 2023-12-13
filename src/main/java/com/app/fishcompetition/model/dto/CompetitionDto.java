@@ -14,6 +14,7 @@ import java.util.List;
 
 @Data
 public class CompetitionDto {
+
     @NotBlank(message = "Code cannot be blank")
     private String code;
 
