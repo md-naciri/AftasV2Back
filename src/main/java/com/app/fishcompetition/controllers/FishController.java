@@ -43,7 +43,7 @@ public class FishController {
     @GetMapping("/fish")
     public ResponseEntity<RequestResponseWithDetails> getAllFish() {
         Map<String,Object> response = new HashMap<>();
-        response.put("All Fish",fishService.getAllFish());
+        response.put("fishes",fishService.getAllFish());
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("Fish retrieved successfully");
         requestResponseWithDetails.setStatus("200");
