@@ -118,4 +118,11 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setMessage(competitionNotAvailableException.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
+    @ExceptionHandler(AverageWeightException.class)
+    public ResponseEntity<RequestResponseWithoutDetails> handleAverageWeightException(AverageWeightException averageWeightException){
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("422");
+        requestResponseWithoutDetails.setMessage(averageWeightException.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
+    }
 }

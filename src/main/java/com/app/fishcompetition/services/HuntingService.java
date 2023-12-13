@@ -12,7 +12,7 @@ public interface HuntingService {
 
     Optional<Hunting> getHuntingById(UUID huntingId);
 
-    Hunting addHunting(Hunting hunting);
+    Hunting addHunting(Hunting hunting, double weight);
 
     Hunting updateHunting(UUID huntingId, Hunting hunting);
 

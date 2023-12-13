@@ -31,12 +31,17 @@ public class HuntingServiceImpl implements HuntingService {
     }
 
     @Override
-    public Hunting addHunting(Hunting hunting) {
+    public Hunting addHunting(Hunting hunting, double weight) {
+
         if(!checkIfMemberExist(hunting.getMember().getId())) {
             throw new NoSuchElementException("Member does that you entered not exist");
         }else if(!checkIfFishExist(hunting.getFish().getId())){
             throw new NoSuchElementException("Fish that you entered not exist");
         }else{
+            if(weight < hunting.getFish().getAverageWeight()){
+
+            }
+            hunting.setNumberOfFish(hunting.getNumberOfFish() + 1);
             return huntingRepository.save(hunting);
         }
 
