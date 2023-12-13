@@ -22,7 +22,6 @@ public class Hunting {
     @GeneratedValue(generator = "uuid2")
     private UUID id;
 
-    @Column(columnDefinition = "int default 0")
     private int numberOfFish;
 
     @ManyToOne

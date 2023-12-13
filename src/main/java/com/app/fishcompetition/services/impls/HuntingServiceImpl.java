@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.custom.AverageWeightException;
 import com.app.fishcompetition.common.exceptions.custom.HuntingAllReadyExistException;
 import com.app.fishcompetition.model.entity.Hunting;
 import com.app.fishcompetition.repositories.HuntingRepository;
@@ -35,21 +36,29 @@ public class HuntingServiceImpl implements HuntingService {
 
         if(!checkIfMemberExist(hunting.getMember().getId())) {
             throw new NoSuchElementException("Member does that you entered not exist");
-        }else if(!checkIfFishExist(hunting.getFish().getId())){
+        } else if(!checkIfFishExist(hunting.getFish().getId())){
             throw new NoSuchElementException("Fish that you entered not exist");
-        }else{
-            if(weight < hunting.getFish().getAverageWeight()){
+        } else {
 
+            if(weight < getFishAverageWeight(hunting.getFish().getId())){
+                throw new AverageWeightException("Weight that you entered is less than average weight of fish");
+            } else {
+                Optional<Hunting> huntingOptional = getHuntingByMemberIdAndFishId(hunting.getMember().getId(),hunting.getFish().getId());
+                if(huntingOptional.isPresent()){
+                    Hunting existingHunting = huntingOptional.get();
+                    existingHunting.setNumberOfFish(existingHunting.getNumberOfFish()+1);
+                    return huntingRepository.save(existingHunting);
+                } else {
+                    hunting.setNumberOfFish(1);
+                    return huntingRepository.save(hunting);
+                }
             }
-            hunting.setNumberOfFish(hunting.getNumberOfFish() + 1);
-            return huntingRepository.save(hunting);
         }
-
     }
 
     @Override
     public Hunting updateHunting(UUID huntingId, Hunting hunting) {
-        return null;
+        return  huntingRepository.save(hunting);
     }
 
     @Override
@@ -67,5 +76,8 @@ public class HuntingServiceImpl implements HuntingService {
     }
     public boolean checkIfFishExist(UUID fishId){
         return fishService.getFishById(fishId).isPresent();
+    }
+    public double getFishAverageWeight(UUID fishId){
+        return fishService.getFishById(fishId).get().getAverageWeight();
     }
 }

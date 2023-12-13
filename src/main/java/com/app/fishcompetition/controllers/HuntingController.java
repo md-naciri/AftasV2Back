@@ -28,7 +28,6 @@ public class HuntingController {
     private final HuntingDtoConverter huntingDtoConverter;
     @PostMapping("/hunting")
     public ResponseEntity<RequestResponseWithDetails>addHunting(@RequestBody @Valid HuntingDto huntingDto){
-        System.out.println("averageWeight: " + huntingDto.getWeight());
         Map<String,Object> response = new HashMap<>();
         Hunting huntingAdded = huntingService.addHunting(huntingDtoConverter.convertToEntity(huntingDto),huntingDto.getWeight());
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
