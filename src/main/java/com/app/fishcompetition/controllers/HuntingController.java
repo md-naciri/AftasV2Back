@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,6 +28,7 @@ public class HuntingController {
     private final HuntingDtoConverter huntingDtoConverter;
     @PostMapping("/hunting")
     public ResponseEntity<RequestResponseWithDetails>addHunting(@RequestBody @Valid HuntingDto huntingDto){
+        System.out.println("averageWeight: " + huntingDto.getWeight());
         Map<String,Object> response = new HashMap<>();
         Hunting huntingAdded = huntingService.addHunting(huntingDtoConverter.convertToEntity(huntingDto));
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());

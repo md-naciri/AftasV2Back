@@ -32,9 +32,7 @@ public class HuntingServiceImpl implements HuntingService {
 
     @Override
     public Hunting addHunting(Hunting hunting) {
-        if(checkIfHuntingForTheSameMemberAndSameFish(hunting.getMember().getId(),hunting.getFish().getId())){
-            throw new HuntingAllReadyExistException("Hunting for the same member and same fish already exists");
-        }else if(!checkIfMemberExist(hunting.getMember().getId())) {
+        if(!checkIfMemberExist(hunting.getMember().getId())) {
             throw new NoSuchElementException("Member does that you entered not exist");
         }else if(!checkIfFishExist(hunting.getFish().getId())){
             throw new NoSuchElementException("Fish that you entered not exist");

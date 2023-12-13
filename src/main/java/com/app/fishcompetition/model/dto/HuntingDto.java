@@ -10,14 +10,12 @@ import lombok.Data;
 @Data
 public class HuntingDto {
 
-    @NotNull(message = "Number of fish is required")
-    @Min(value = 1, message = "Number of fish must be greater than 0")
-    private int numberOfFish;
-
     @NotNull(message = "Member is required")
     @ManyToOne
     private Member member;
 
+    @NotNull(message = "Weight of hunt is required")
+    private double weight;
 
     @NotNull(message = "Fish is required")
     @ManyToOne
