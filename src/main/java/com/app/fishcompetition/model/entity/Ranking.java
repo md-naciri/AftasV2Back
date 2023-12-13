@@ -23,11 +23,9 @@ public class Ranking {
 
     private int score;
 
-    @JsonBackReference
     @ManyToOne
     private Member member;
 
-    @JsonBackReference
     @ManyToOne
     private Competition competition;
 }

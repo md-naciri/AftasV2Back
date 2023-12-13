@@ -29,7 +29,6 @@ public class Fish {
     @OneToMany(mappedBy = "fish")
     private List<Hunting> huntings;
 
-    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Level level;
 }

@@ -111,4 +111,11 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setMessage(huntingAllReadyExistException.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
+    @ExceptionHandler(CompetitionNotAvailableException.class)
+    public ResponseEntity<RequestResponseWithoutDetails> handleCompetitionNotAvailableException(CompetitionNotAvailableException competitionNotAvailableException){
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("422");
+        requestResponseWithoutDetails.setMessage(competitionNotAvailableException.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
+    }
 }

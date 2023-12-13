@@ -24,11 +24,9 @@ public class Hunting {
 
     private int numberOfFish;
 
-    @JsonBackReference
     @ManyToOne
     private Member member;
 
-    @JsonBackReference
     @ManyToOne
     private Fish fish;
 

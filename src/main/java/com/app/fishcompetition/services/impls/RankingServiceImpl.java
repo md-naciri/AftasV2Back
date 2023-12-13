@@ -1,5 +1,6 @@
 package com.app.fishcompetition.services.impls;
 
+import com.app.fishcompetition.common.exceptions.custom.CompetitionNotAvailableException;
 import com.app.fishcompetition.common.exceptions.custom.MemberCompetitionAlreadyExistException;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Member;
@@ -34,7 +35,7 @@ public class RankingServiceImpl  implements RankingService {
     @Override
     public Ranking addRanking(Ranking ranking) {
            if(!checkIfCompetitionIsAvailableToJoin(ranking.getCompetition().getId())){
-                throw  new CompetitionNotAvailableException("competition is not available to join");
+                throw  new CompetitionNotAvailableException("competition is not available  is still 24h to start");
            }else  if(!checkIfMemberExist(ranking.getMember().getId())){
                 throw  new NoSuchElementException("member not exist");
             }else if (!checkIfCompetitionExist(ranking.getCompetition().getId())){
@@ -79,7 +80,7 @@ public class RankingServiceImpl  implements RankingService {
             cal.add(Calendar.HOUR, 24);
             Date currentDatePlus24h = cal.getTime();
             Date competitionDate = competition.get().getDate();
-            return currentDatePlus24h.after(competitionDate);
+            return currentDatePlus24h.before(competitionDate);
         }else{
             throw new NoSuchElementException("competition not exist");
         }
