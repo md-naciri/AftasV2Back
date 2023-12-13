@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -36,7 +33,9 @@ public class RankingServiceImpl  implements RankingService {
 
     @Override
     public Ranking addRanking(Ranking ranking) {
-            if(!checkIfMemberExist(ranking.getMember().getId())){
+           if(!checkIfCompetitionIsAvailableToJoin(ranking.getCompetition().getId())){
+                throw  new CompetitionNotAvailableException("competition is not available to join");
+           }else  if(!checkIfMemberExist(ranking.getMember().getId())){
                 throw  new NoSuchElementException("member not exist");
             }else if (!checkIfCompetitionExist(ranking.getCompetition().getId())){
                 throw  new NoSuchElementException("competition not exist");
@@ -73,5 +72,16 @@ public class RankingServiceImpl  implements RankingService {
         Optional<Ranking> ranking = rankingRepository.findByMemberIdAndCompetitionId(memberId, competitionId);
         return ranking.isPresent();
     }
-
+    public boolean checkIfCompetitionIsAvailableToJoin(UUID competitionId){
+        Optional<Competition> competition = competitionService.getCompetitionById(competitionId);
+        if(competition.isPresent()) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.HOUR, 24);
+            Date currentDatePlus24h = cal.getTime();
+            Date competitionDate = competition.get().getDate();
+            return currentDatePlus24h.after(competitionDate);
+        }else{
+            throw new NoSuchElementException("competition not exist");
+        }
+    }
 }
