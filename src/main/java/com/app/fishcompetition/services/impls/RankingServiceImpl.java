@@ -32,6 +32,10 @@ public class RankingServiceImpl  implements RankingService {
         return rankingRepository.findById(id);
     }
 
+    public Optional<Ranking> getRankingByMemberIdAndCompetitionId(UUID memberId, UUID competitionId) {
+        return rankingRepository.findByMemberIdAndCompetitionId(memberId, competitionId);
+    }
+
     @Override
     public Ranking addRanking(Ranking ranking) {
            if(!checkIfCompetitionIsAvailableToJoin(ranking.getCompetition().getId())){
