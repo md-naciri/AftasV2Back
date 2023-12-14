@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -38,6 +35,16 @@ public class RankingController {
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("Ranking added successfully");
         response.put("Ranking",rankingToAdd);
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
+    @GetMapping("/rankings")
+    public ResponseEntity<RequestResponseWithDetails> getAllRanking(){
+        Map<String,Object> response = new HashMap<>();
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setMessage("Rankings retrieved successfully");
+        response.put("Rankings",rankingService.getRankings());
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
