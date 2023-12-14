@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RequestResponseWithoutDetails> customHandleNotReadable(HttpMessageNotReadableException ex) {
         requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithoutDetails.setStatus("422");
-        requestResponseWithoutDetails.setMessage("please enter a valid data");
+        requestResponseWithoutDetails.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
     }
 
