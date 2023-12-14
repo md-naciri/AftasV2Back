@@ -51,7 +51,7 @@ public class RankingServiceImpl  implements RankingService {
 
     @Override
     public Ranking updateRanking(UUID id, Ranking ranking) {
-        return null;
+       return  rankingRepository.save(ranking);
     }
 
     @Override
