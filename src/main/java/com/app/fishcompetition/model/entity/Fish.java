@@ -34,6 +34,6 @@ public class Fish {
     private List<Hunting> huntings;
 
 
-    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Level level;
 }

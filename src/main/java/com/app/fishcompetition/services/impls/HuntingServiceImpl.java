@@ -1,6 +1,7 @@
 package com.app.fishcompetition.services.impls;
 
 import com.app.fishcompetition.common.exceptions.custom.AverageWeightException;
+import com.app.fishcompetition.common.exceptions.custom.CompetitionTimeException;
 import com.app.fishcompetition.common.exceptions.custom.HuntingAllReadyExistException;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Fish;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -41,14 +43,15 @@ public class HuntingServiceImpl implements HuntingService {
 
     @Override
     public Hunting addHunting(Hunting hunting, double weight) {
-
         if(!checkIfMemberExist(hunting.getMember().getId())) {
-            throw new NoSuchElementException("Member does that you entered not exist");
+            throw new NoSuchElementException("Member  that you entered not exist");
         } else if(!checkIfFishExist(hunting.getFish().getId())){
             throw new NoSuchElementException("Fish that you entered not exist");
         }else if(!checkIfCompetitionExist(hunting.getCompetition().getId())){
             throw new NoSuchElementException("Competition that you entered not exist");
-        }else if(!checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
+        }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
+            throw new CompetitionTimeException("Competition time is over");
+        } else if(!checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
             throw new HuntingAllReadyExistException("Member that you entered not belong to this competition");
         }else {
             if(weight < getFishAverageWeight(hunting.getFish().getId())){
@@ -77,8 +80,6 @@ public class HuntingServiceImpl implements HuntingService {
                     ranking.get().setScore(calculateScoreOfMember(savedHunting.getMember().getId(),savedHunting.getCompetition().getId()));
                     rankingService.updateRanking(ranking.get().getId(),ranking.get());
                 }
-
-
 
                 return savedHunting;
             }
@@ -136,4 +137,11 @@ public class HuntingServiceImpl implements HuntingService {
    public boolean checkIfMemberAlreadyRanked(UUID memberId, UUID competitionId){
        return rankingService.checkIfUserAlreadyRankedWithSameCompetition(memberId,competitionId);
    }
+    public boolean isCurrentTimeAfterCompetitionTime(LocalTime competitionTime) {
+        LocalTime now = LocalTime.now();
+        return now.isAfter(competitionTime);
+    }
+    public Competition getCompetitionById(UUID competitionId){
+        return competitionService.getCompetitionById(competitionId).orElseThrow(() -> new NoSuchElementException("Competition that you entered does not exist"));
+    }
 }
