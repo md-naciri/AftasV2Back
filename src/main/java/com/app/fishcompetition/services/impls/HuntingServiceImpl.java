@@ -14,6 +14,7 @@ import com.app.fishcompetition.services.HuntingService;
 import com.app.fishcompetition.services.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -51,7 +52,9 @@ public class HuntingServiceImpl implements HuntingService {
             throw new NoSuchElementException("Competition that you entered not exist");
         }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
             throw new CompetitionTimeException("Competition time is over");
-        } else if(!checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
+        }else if(isCurrentTimeBeforeCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getStartTime().toLocalTime())){
+            throw new CompetitionTimeException("Competition is not started yet");
+        }else if(checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
             throw new HuntingAllReadyExistException("Member that you entered not belong to this competition");
         }else {
             if(weight < getFishAverageWeight(hunting.getFish().getId())){
@@ -95,9 +98,7 @@ public class HuntingServiceImpl implements HuntingService {
     public void deleteHunting(UUID huntingId) {
 
     }
-    public boolean checkIfHuntingForSameMemberAndSameFishAndSameCompetition(UUID memberId, UUID fishId,UUID competitionId){
-            return getHuntingByMemberIdAndFishIdAndCompetitionId(memberId,fishId,competitionId).isPresent();
-    }
+    
     public Optional<Hunting> getHuntingByMemberIdAndFishIdAndCompetitionId(UUID memberId, UUID fishId,UUID competitionId){
         return huntingRepository.findByMemberIdAndFishId(memberId,fishId,competitionId);
     }
@@ -137,11 +138,16 @@ public class HuntingServiceImpl implements HuntingService {
    public boolean checkIfMemberAlreadyRanked(UUID memberId, UUID competitionId){
        return rankingService.checkIfUserAlreadyRankedWithSameCompetition(memberId,competitionId);
    }
-    public boolean isCurrentTimeAfterCompetitionTime(LocalTime competitionTime) {
+    public boolean isCurrentTimeAfterCompetitionTime(LocalTime competitionEndTime) {
         LocalTime now = LocalTime.now();
-        return now.isAfter(competitionTime);
+        return now.isAfter(competitionEndTime);
+    }
+    public boolean isCurrentTimeBeforeCompetitionTime(LocalTime competitionStartTime){
+        LocalTime now = LocalTime.now();
+        return  now.isBefore(competitionStartTime);
     }
     public Competition getCompetitionById(UUID competitionId){
         return competitionService.getCompetitionById(competitionId).orElseThrow(() -> new NoSuchElementException("Competition that you entered does not exist"));
     }
+
 }
