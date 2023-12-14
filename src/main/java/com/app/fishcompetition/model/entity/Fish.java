@@ -33,6 +33,7 @@ public class Fish {
     @OneToMany(mappedBy = "fish")
     private List<Hunting> huntings;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+
+    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Level level;
 }

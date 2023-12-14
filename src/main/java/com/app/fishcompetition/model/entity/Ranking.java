@@ -26,9 +26,9 @@ public class Ranking {
 
     private int score;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Competition competition;
 }

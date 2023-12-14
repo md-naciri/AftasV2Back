@@ -24,12 +24,12 @@ public class Hunting {
 
     private int numberOfFish;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Fish fish;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Competition competition;
 }

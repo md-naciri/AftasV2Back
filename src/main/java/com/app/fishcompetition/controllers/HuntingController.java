@@ -6,6 +6,7 @@ import com.app.fishcompetition.mapper.HuntingDtoConverter;
 import com.app.fishcompetition.model.dto.HuntingDto;
 import com.app.fishcompetition.model.entity.Hunting;
 import com.app.fishcompetition.services.HuntingService;
+import com.app.fishcompetition.services.impls.HuntingServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -27,6 +28,7 @@ public class HuntingController {
     private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     private final RequestResponseWithDetails   requestResponseWithDetails;
     private final HuntingDtoConverter huntingDtoConverter;
+    private final HuntingServiceImpl huntingServiceImpl;
     @PostMapping("/hunting")
     public ResponseEntity<RequestResponseWithDetails>addHunting(@RequestBody @Valid HuntingDto huntingDto){
         Map<String,Object> response = new HashMap<>();
@@ -53,6 +55,18 @@ public class HuntingController {
     public ResponseEntity<RequestResponseWithDetails> getHuntingById(@PathVariable("huntingId") UUID huntingId){
         Map<String,Object> response = new HashMap<>();
         response.put("hunting",huntingService.getHuntingById(huntingId));
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setMessage("Hunting retrieved successfully");
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
+
+    @GetMapping("/hunting/{memberId}/{competitionId}")
+    public ResponseEntity<RequestResponseWithDetails> getHuntingById(@PathVariable UUID memberId,@PathVariable UUID competitionId){
+        Map<String,Object> response = new HashMap<>();
+
+        response.put("hunting",huntingServiceImpl.getAllHuntingOfMemberInCompetition(memberId,competitionId).get(0).getFish().getLevel().getPoints() );
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("Hunting retrieved successfully");
