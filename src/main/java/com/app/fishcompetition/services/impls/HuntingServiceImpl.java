@@ -26,6 +26,7 @@ public class HuntingServiceImpl implements HuntingService {
     private final MemberService memberService;
     private final FishService fishService;
     private final CompetitionService competitionService;
+    private final RankingServiceImpl rankingService;
     @Override
     public List<Hunting> getAllHunting() {
         return null;
@@ -45,6 +46,8 @@ public class HuntingServiceImpl implements HuntingService {
             throw new NoSuchElementException("Fish that you entered not exist");
         }else if(!checkIfCompetitionExist(hunting.getCompetition().getId())){
             throw new NoSuchElementException("Competition that you entered not exist");
+        }else if(!checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
+            throw new HuntingAllReadyExistException("Member that you entered not belong to this competition");
         }else {
             if(weight < getFishAverageWeight(hunting.getFish().getId())){
                 throw new AverageWeightException("Weight that you entered is less than average weight of fish");
@@ -107,5 +110,8 @@ public class HuntingServiceImpl implements HuntingService {
    }
    public List<Hunting> getAllHuntingOfMemberInCompetition(UUID memberId, UUID competitionId){
       return huntingRepository.getAllHuntingOfSameCompetitionAndSameMember(memberId,competitionId);
+   }
+   public boolean checkIfMemberAlreadyRanked(UUID memberId, UUID competitionId){
+       return rankingService.checkIfUserAlreadyRankedWithSameCompetition(memberId,competitionId);
    }
 }
