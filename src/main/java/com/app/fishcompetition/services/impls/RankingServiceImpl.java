@@ -24,7 +24,7 @@ public class RankingServiceImpl  implements RankingService {
     private final CompetitionService competitionService;
     @Override
     public List<Ranking> getRankings() {
-        return null;
+        return rankingRepository.findAll();
     }
 
     @Override
