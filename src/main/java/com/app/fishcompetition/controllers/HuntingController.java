@@ -37,4 +37,15 @@ public class HuntingController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+
+    @GetMapping("/huntings")
+    public ResponseEntity<RequestResponseWithDetails> getAllHunting(){
+        Map<String,Object> response = new HashMap<>();
+        response.put("huntings",huntingService.getAllHunting());
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setMessage("Huntings retrieved successfully");
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
 }
