@@ -55,24 +55,23 @@ public class HuntingServiceImpl implements HuntingService {
             } else {
                 Optional<Hunting> huntingOptional = getHuntingByMemberIdAndFishIdAndCompetitionId(hunting.getMember().getId(),hunting.getFish().getId(),hunting.getCompetition().getId());
 
-
+                Hunting savedHunting;
 
                 if(huntingOptional.isPresent()){
                     Hunting existingHunting = huntingOptional.get();
                     existingHunting.setNumberOfFish(existingHunting.getNumberOfFish()+1);
-
-                    Ranking ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId()).get();
-                    ranking.setScore(calculateScoreOfMember(hunting.getMember().getId(),hunting.getCompetition().getId()));
-                    rankingService.updateRanking(ranking.getId(),ranking);
-
-                    return huntingRepository.save(existingHunting);
+                    savedHunting = huntingRepository.save(existingHunting);
                 } else {
                     hunting.setNumberOfFish(1);
-                    Ranking ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId()).get();
-                    ranking.setScore(calculateScoreOfMember(hunting.getMember().getId(),hunting.getCompetition().getId()));
-                    rankingService.updateRanking(ranking.getId(),ranking);
-                    return huntingRepository.save(hunting);
+                    savedHunting = huntingRepository.save(hunting);
                 }
+
+                Ranking ranking = rankingService.getRankingByMemberIdAndCompetitionId(savedHunting.getMember().getId(),savedHunting.getCompetition().getId()).get();
+
+                ranking.setScore(calculateScoreOfMember(savedHunting.getMember().getId(),savedHunting.getCompetition().getId()));
+                rankingService.updateRanking(ranking.getId(),ranking);
+
+                return savedHunting;
             }
         }
     }
@@ -114,8 +113,11 @@ public class HuntingServiceImpl implements HuntingService {
              throw new NoSuchElementException("Competition that you entered not exist");
          }else{
              List<Hunting> allHunting = getAllHuntingOfMemberInCompetition(memberId,competitionId);
+
              for(Hunting hunting : allHunting){
-                 score += hunting.getNumberOfFish() * hunting.getFish().getLevel().getPoints();
+                 if(hunting.getFish().getLevel() != null) {
+                     score += hunting.getNumberOfFish() * hunting.getFish().getLevel().getPoints();
+                }
              }
          }
       return score;

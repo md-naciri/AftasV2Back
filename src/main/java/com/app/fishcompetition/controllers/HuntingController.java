@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -45,6 +46,16 @@ public class HuntingController {
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("Huntings retrieved successfully");
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
+    @GetMapping("/hunting/{huntingId}")
+    public ResponseEntity<RequestResponseWithDetails> getHuntingById(@PathVariable("huntingId") UUID huntingId){
+        Map<String,Object> response = new HashMap<>();
+        response.put("hunting",huntingService.getHuntingById(huntingId));
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setMessage("Hunting retrieved successfully");
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
