@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface HuntingRepository extends JpaRepository<Hunting, UUID> {
 
-    @Query("SELECT h FROM Hunting h WHERE h.member.id = ?1 AND h.fish.id = ?2")
-    Optional<Hunting> findByMemberIdAndFishId(UUID memberId, UUID fishId);
+    @Query("SELECT h FROM Hunting h WHERE h.member.id = ?1 AND h.fish.id = ?2 AND h.competition.id = ?3")
+    Optional<Hunting> findByMemberIdAndFishId(UUID memberId, UUID fishId, UUID competitionId);
 }
