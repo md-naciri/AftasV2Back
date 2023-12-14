@@ -2,6 +2,7 @@ package com.app.fishcompetition.services.impls;
 
 import com.app.fishcompetition.common.exceptions.custom.AverageWeightException;
 import com.app.fishcompetition.common.exceptions.custom.HuntingAllReadyExistException;
+import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Hunting;
 import com.app.fishcompetition.repositories.HuntingRepository;
 import com.app.fishcompetition.services.CompetitionService;
@@ -88,4 +89,23 @@ public class HuntingServiceImpl implements HuntingService {
     public double getFishAverageWeight(UUID fishId){
         return fishService.getFishById(fishId).get().getAverageWeight();
     }
+
+
+   public double calculateScoreOfMember(UUID memberId, UUID competitionId){
+       double score = 0;
+         if(!checkIfMemberExist(memberId)){
+             throw new NoSuchElementException("Member does that you entered not exist");
+         }else  if(!checkIfCompetitionExist(competitionId)){
+             throw new NoSuchElementException("Competition that you entered not exist");
+         }else{
+             List<Hunting> allHunting = getAllHuntingOfMemberInCompetition(memberId,competitionId);
+             for(Hunting hunting : allHunting){
+                 score += hunting.getNumberOfFish() * hunting.getFish().getLevel().getPoints();
+             }
+         }
+      return score;
+   }
+   public List<Hunting> getAllHuntingOfMemberInCompetition(UUID memberId, UUID competitionId){
+      return huntingRepository.getAllHuntingOfSameCompetitionAndSameMember(memberId,competitionId);
+   }
 }
