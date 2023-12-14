@@ -54,8 +54,19 @@ public class RankingServiceImpl  implements RankingService {
     }
 
     @Override
-    public Ranking updateRanking(UUID id, Ranking ranking) {
-       return  rankingRepository.save(ranking);
+    public void updateRanking(UUID rankingId, Ranking updatedRanking) {
+        Ranking ranking = rankingRepository.findById(rankingId)
+                .orElseThrow(() -> new NoSuchElementException("Ranking not found"));
+
+        ranking.setScore(updatedRanking.getScore());
+
+        List<Ranking> rankings = rankingRepository.findAllByCompetitionIdOrderByScoreDesc(ranking.getCompetition().getId());
+
+        for (int i = 0; i < rankings.size(); i++) {
+            Ranking currentRanking = rankings.get(i);
+            currentRanking.setRank(i + 1);
+            rankingRepository.save(currentRanking);
+        }
     }
 
     @Override

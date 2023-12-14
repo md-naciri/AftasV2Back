@@ -12,7 +12,7 @@ public interface RankingService {
 
     Ranking addRanking(Ranking ranking);
 
-    Ranking updateRanking(UUID id, Ranking ranking);
+    void updateRanking(UUID id, Ranking ranking);
 
     void deleteRanking(UUID id);
 }
