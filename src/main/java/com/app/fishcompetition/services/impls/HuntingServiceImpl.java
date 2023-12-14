@@ -4,6 +4,7 @@ import com.app.fishcompetition.common.exceptions.custom.AverageWeightException;
 import com.app.fishcompetition.common.exceptions.custom.HuntingAllReadyExistException;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Hunting;
+import com.app.fishcompetition.model.entity.Ranking;
 import com.app.fishcompetition.repositories.HuntingRepository;
 import com.app.fishcompetition.services.CompetitionService;
 import com.app.fishcompetition.services.FishService;
@@ -53,12 +54,23 @@ public class HuntingServiceImpl implements HuntingService {
                 throw new AverageWeightException("Weight that you entered is less than average weight of fish");
             } else {
                 Optional<Hunting> huntingOptional = getHuntingByMemberIdAndFishIdAndCompetitionId(hunting.getMember().getId(),hunting.getFish().getId(),hunting.getCompetition().getId());
+
+
+
                 if(huntingOptional.isPresent()){
                     Hunting existingHunting = huntingOptional.get();
                     existingHunting.setNumberOfFish(existingHunting.getNumberOfFish()+1);
+
+                    Ranking ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId()).get();
+                    ranking.setScore(calculateScoreOfMember(hunting.getMember().getId(),hunting.getCompetition().getId()));
+                    rankingService.updateRanking(ranking.getId(),ranking);
+
                     return huntingRepository.save(existingHunting);
                 } else {
                     hunting.setNumberOfFish(1);
+                    Ranking ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId()).get();
+                    ranking.setScore(calculateScoreOfMember(hunting.getMember().getId(),hunting.getCompetition().getId()));
+                    rankingService.updateRanking(ranking.getId(),ranking);
                     return huntingRepository.save(hunting);
                 }
             }
@@ -94,8 +106,8 @@ public class HuntingServiceImpl implements HuntingService {
     }
 
 
-   public double calculateScoreOfMember(UUID memberId, UUID competitionId){
-       double score = 0;
+   public int calculateScoreOfMember(UUID memberId, UUID competitionId){
+       int score = 0;
          if(!checkIfMemberExist(memberId)){
              throw new NoSuchElementException("Member does that you entered not exist");
          }else  if(!checkIfCompetitionExist(competitionId)){
