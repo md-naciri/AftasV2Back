@@ -30,7 +30,7 @@ public class HuntingServiceImpl implements HuntingService {
     private final RankingServiceImpl rankingService;
     @Override
     public List<Hunting> getAllHunting() {
-        return null;
+         return  huntingRepository.findAll();
     }
 
     @Override
