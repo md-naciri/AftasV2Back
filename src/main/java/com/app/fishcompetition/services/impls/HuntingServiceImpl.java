@@ -98,7 +98,7 @@ public class HuntingServiceImpl implements HuntingService {
     public void deleteHunting(UUID huntingId) {
 
     }
-    
+
     public Optional<Hunting> getHuntingByMemberIdAndFishIdAndCompetitionId(UUID memberId, UUID fishId,UUID competitionId){
         return huntingRepository.findByMemberIdAndFishId(memberId,fishId,competitionId);
     }

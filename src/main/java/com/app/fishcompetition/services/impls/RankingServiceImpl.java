@@ -49,6 +49,9 @@ public class RankingServiceImpl  implements RankingService {
             }else{
                 ranking.setRank(1);
                 ranking.setScore(0);
+                Competition competition = competitionService.getCompetitionById(ranking.getCompetition().getId()).get();
+                competition.setNumberOfParticipants(competition.getNumberOfParticipants() + 1);
+                competitionService.updateCompetition(competition.getId(), competition);
                 return rankingRepository.save(ranking);
             }
     }
