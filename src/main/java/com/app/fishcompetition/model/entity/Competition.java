@@ -1,6 +1,7 @@
 package com.app.fishcompetition.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -42,9 +43,11 @@ public class Competition {
 
     private Double amount;
 
-    @OneToMany(mappedBy = "competition")
+    @OneToMany(fetch = FetchType.EAGER , mappedBy = "competition")
+    @JsonIgnoreProperties("competition")
     private List<Ranking> rankings;
 
-    @OneToMany(mappedBy = "competition")
+    @OneToMany(fetch = FetchType.EAGER , mappedBy = "competition")
+    @JsonIgnoreProperties("competition")
     private List<Hunting> huntings;
 }

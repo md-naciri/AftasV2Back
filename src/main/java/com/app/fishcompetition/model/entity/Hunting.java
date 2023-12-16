@@ -2,6 +2,7 @@ package com.app.fishcompetition.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,12 @@ public class Hunting {
 
     private int numberOfFish;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Member member;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Fish fish;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Competition competition;
 }

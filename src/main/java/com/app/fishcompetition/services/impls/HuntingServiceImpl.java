@@ -17,11 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -50,10 +49,12 @@ public class HuntingServiceImpl implements HuntingService {
             throw new NoSuchElementException("Fish that you entered not exist");
         }else if(!checkIfCompetitionExist(hunting.getCompetition().getId())){
             throw new NoSuchElementException("Competition that you entered not exist");
-        }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
-            throw new CompetitionTimeException("Competition time is over");
+        }else if(!isTodayCompetitionDay(hunting.getCompetition().getId())){
+            throw new CompetitionTimeException("Today is not the competition day");
         }else if(isCurrentTimeBeforeCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getStartTime().toLocalTime())){
             throw new CompetitionTimeException("Competition is not started yet");
+        }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
+            throw new CompetitionTimeException("Competition time is over");
         }else if(checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
             throw new HuntingAllReadyExistException("Member that you entered not belong to this competition");
         }else {
@@ -147,7 +148,26 @@ public class HuntingServiceImpl implements HuntingService {
         return  now.isBefore(competitionStartTime);
     }
     public Competition getCompetitionById(UUID competitionId){
-        return competitionService.getCompetitionById(competitionId).orElseThrow(() -> new NoSuchElementException("Competition that you entered does not exist"));
+        return competitionService.getCompetitionById(competitionId).orElseThrow(() -> new NoSuchElementException("Competition that you entered  not exist"));
     }
+    public boolean isTodayCompetitionDay(UUID competitionId) {
+        Optional<Competition> optionalCompetition = competitionService.getCompetitionById(competitionId);
+        if (optionalCompetition.isPresent()) {
+            Competition competition = optionalCompetition.get();
+
+            if (competition.getDate() instanceof java.sql.Date) {
+                LocalDate competitionDate = ((java.sql.Date) competition.getDate()).toLocalDate();
+                LocalDate currentDate = LocalDate.now();
+
+                return competitionDate.isEqual(currentDate);
+            } else {
+                throw new IllegalStateException("Unexpected date type. Expected java.sql.Date.");
+            }
+        } else {
+            throw new NoSuchElementException("Competition that you entered does not exist");
+        }
+    }
+
+
 
 }

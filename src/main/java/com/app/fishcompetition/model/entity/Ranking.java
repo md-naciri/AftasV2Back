@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope = Ranking.class)
 public class Ranking {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -26,9 +26,9 @@ public class Ranking {
 
     private int score;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Member member;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Competition competition;
 }
