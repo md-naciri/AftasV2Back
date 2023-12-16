@@ -49,9 +49,9 @@ public class HuntingServiceImpl implements HuntingService {
             throw new NoSuchElementException("Fish that you entered not exist");
         }else if(!checkIfCompetitionExist(hunting.getCompetition().getId())){
             throw new NoSuchElementException("Competition that you entered not exist");
-        }else if(!isTodayCompetitionDay(hunting.getCompetition().getId())){
+        }else if(isTodayCompetitionDay(hunting.getCompetition().getId())){
             throw new CompetitionTimeException("Today is not the competition day");
-        }else if(isCurrentTimeBeforeCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getStartTime().toLocalTime())){
+        }else if(!isCurrentTimeBeforeCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getStartTime().toLocalTime())){
             throw new CompetitionTimeException("Competition is not started yet");
         }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
             throw new CompetitionTimeException("Competition time is over");
@@ -79,13 +79,14 @@ public class HuntingServiceImpl implements HuntingService {
 
                 Optional<Ranking> ranking = rankingService.getRankingByMemberIdAndCompetitionId(savedHunting.getMember().getId(),savedHunting.getCompetition().getId());
                 if(!ranking.isPresent()){
-                    throw new NoSuchElementException("Ranking that you want update not exist");
+                    throw new NoSuchElementException("The member not assigned to the competition  that you chose");
                 }else{
                     ranking.get().setScore(calculateScoreOfMember(savedHunting.getMember().getId(),savedHunting.getCompetition().getId()));
                     rankingService.updateRanking(ranking.get().getId(),ranking.get());
+                    return savedHunting;
                 }
 
-                return savedHunting;
+
             }
         }
     }
