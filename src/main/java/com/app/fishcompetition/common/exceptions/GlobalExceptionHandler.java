@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<RequestResponseWithDetails> handleNoSuchElementException(NoSuchElementException noSuchElementException) {
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
-        requestResponseWithDetails.setMessage("No such element");
+        requestResponseWithDetails.setMessage(noSuchElementException.getMessage());
         requestResponseWithDetails.setStatus("404");
         Map<String,Object> errors = new HashMap<>();
         errors.put("Error", noSuchElementException.getMessage());

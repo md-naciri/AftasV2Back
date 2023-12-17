@@ -27,8 +27,7 @@ public class Fish {
 
     private double averageWeight;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "fish")
-    @JsonIgnoreProperties("fish")
+    @OneToMany( mappedBy = "fish")
     private List<Hunting> huntings;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})

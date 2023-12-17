@@ -49,9 +49,9 @@ public class HuntingServiceImpl implements HuntingService {
             throw new NoSuchElementException("Fish that you entered not exist");
         }else if(!checkIfCompetitionExist(hunting.getCompetition().getId())){
             throw new NoSuchElementException("Competition that you entered not exist");
-        }else if(isTodayCompetitionDay(hunting.getCompetition().getId())){
+        }else if(!isTodayCompetitionDay(hunting.getCompetition().getId())){
             throw new CompetitionTimeException("Today is not the competition day");
-        }else if(!isCurrentTimeBeforeCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getStartTime().toLocalTime())){
+        }else if(isCurrentTimeBeforeCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getStartTime().toLocalTime())){
             throw new CompetitionTimeException("Competition is not started yet");
         }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
             throw new CompetitionTimeException("Competition time is over");
@@ -65,27 +65,26 @@ public class HuntingServiceImpl implements HuntingService {
 
                 Hunting savedHunting;
 
-                if(huntingOptional.isPresent()){
-                    Hunting existingHunting = huntingOptional.get();
-                    existingHunting.setNumberOfFish(existingHunting.getNumberOfFish()+1);
-                    savedHunting = huntingRepository.save(existingHunting);
-                } else {
-                    hunting.setNumberOfFish(1);
-                    UUID fishId = hunting.getFish().getId();
-                    Fish fish = fishService.getFishById(fishId).orElseThrow(() -> new NoSuchElementException("Fish that you entered does not exist"));
-                    hunting.setFish(fish);
-                    savedHunting = huntingRepository.save(hunting);
-                }
-
-                Optional<Ranking> ranking = rankingService.getRankingByMemberIdAndCompetitionId(savedHunting.getMember().getId(),savedHunting.getCompetition().getId());
+                Optional<Ranking> ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId());
+                System.out.println(ranking);
                 if(!ranking.isPresent()){
                     throw new NoSuchElementException("The member not assigned to the competition  that you chose");
                 }else{
+                    if(huntingOptional.isPresent()){
+                        Hunting existingHunting = huntingOptional.get();
+                        existingHunting.setNumberOfFish(existingHunting.getNumberOfFish()+1);
+                        savedHunting = huntingRepository.save(existingHunting);
+                    } else {
+                        hunting.setNumberOfFish(1);
+                        UUID fishId = hunting.getFish().getId();
+                        Fish fish = fishService.getFishById(fishId).orElseThrow(() -> new NoSuchElementException("Fish that you entered does not exist"));
+                        hunting.setFish(fish);
+                        savedHunting = huntingRepository.save(hunting);
+                    }
                     ranking.get().setScore(calculateScoreOfMember(savedHunting.getMember().getId(),savedHunting.getCompetition().getId()));
                     rankingService.updateRanking(ranking.get().getId(),ranking.get());
                     return savedHunting;
                 }
-
 
             }
         }
@@ -165,7 +164,7 @@ public class HuntingServiceImpl implements HuntingService {
                 throw new IllegalStateException("Unexpected date type. Expected java.sql.Date.");
             }
         } else {
-            throw new NoSuchElementException("Competition that you entered does not exist");
+            throw new NoSuchElementException("Competition that you entered  not exist");
         }
     }
 

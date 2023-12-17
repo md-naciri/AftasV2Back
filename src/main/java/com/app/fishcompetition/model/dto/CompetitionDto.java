@@ -38,7 +38,4 @@ public class CompetitionDto {
     @Min(value = 1, message = "Amount must be greater than 0")
     private Double amount;
 
-    private List<Ranking> rankings;
-
-    private List<Hunting> huntings;
 }

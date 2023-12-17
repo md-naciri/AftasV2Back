@@ -36,7 +36,6 @@ public class Level {
     @Column(unique = true)
     private int points;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "level")
-    @JsonIgnoreProperties("level")
+    @OneToMany(mappedBy = "level")
     private List<Fish> fishes;
 }

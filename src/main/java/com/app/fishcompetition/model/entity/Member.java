@@ -41,11 +41,9 @@ public class Member {
     @Column(unique = true)
     private String identityNumber;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "member")
-    @JsonIgnoreProperties("member")
+    @OneToMany( mappedBy = "member")
     private List<Ranking> rankings;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "member")
-    @JsonIgnoreProperties("member")
+    @OneToMany(mappedBy = "member")
     private List<Hunting> huntings;
 }

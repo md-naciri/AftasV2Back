@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -43,7 +41,12 @@ public class FishController {
     @GetMapping("/fish")
     public ResponseEntity<RequestResponseWithDetails> getAllFish() {
         Map<String,Object> response = new HashMap<>();
-        response.put("fishes",fishService.getAllFish());
+        List<Fish> fishes = fishService.getAllFish();
+        List<FishDto> fishesDto  = new ArrayList<>();
+        for(Fish fish: fishes){
+            fishesDto.add(fishDtoConverter.convertFishTODto(fish));
+        }
+        response.put("fishes",fishesDto);
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("Fish retrieved successfully");
         requestResponseWithDetails.setStatus("200");

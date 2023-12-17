@@ -29,6 +29,4 @@ public class LevelDto {
     @NotNull(message = "Points are required")
     @Min(value = 1,message = "Points must be greater than 0")
     private int points;
-
-    private List<Fish> fishes;
 }

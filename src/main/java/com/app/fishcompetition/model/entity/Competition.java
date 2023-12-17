@@ -43,11 +43,9 @@ public class Competition {
 
     private Double amount;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "competition")
-    @JsonIgnoreProperties("competition")
+    @OneToMany(mappedBy = "competition")
     private List<Ranking> rankings;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "competition")
-    @JsonIgnoreProperties("competition")
+    @OneToMany(mappedBy = "competition")
     private List<Hunting> huntings;
 }

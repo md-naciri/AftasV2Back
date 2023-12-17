@@ -36,8 +36,4 @@ public class MemberDto {
     @NotNull(message = "Identity number cannot be null")
     @Size(min = 2, max = 50, message = "Identity number must be between 2 and 50 characters")
     private String identityNumber;
-
-    private List<Ranking> rankings;
-
-    private List<Hunting> huntings;
 }
