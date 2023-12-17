@@ -14,6 +14,8 @@ import java.util.UUID;
 @Data
 public class FishDto {
 
+    private UUID id;
+
     @NotBlank(message = "Name is mandatory")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters")
     private String name;

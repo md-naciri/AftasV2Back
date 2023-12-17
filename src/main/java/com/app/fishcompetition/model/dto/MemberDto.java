@@ -13,9 +13,12 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class MemberDto {
+
+    private UUID id;
 
     @NotBlank(message = "first name  is required")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")

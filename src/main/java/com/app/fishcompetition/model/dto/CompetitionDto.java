@@ -12,9 +12,12 @@ import lombok.Data;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class CompetitionDto {
+
+    private UUID id;
 
     @NotBlank(message = "Code cannot be blank")
     private String code;

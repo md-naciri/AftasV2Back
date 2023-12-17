@@ -11,10 +11,13 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class LevelDto {
 
+
+    private UUID id;
 
     @NotBlank(message = "Code is required")
     private String code;
