@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api")
@@ -42,10 +44,15 @@ public class MemberController {
     @GetMapping("/members")
     public ResponseEntity<RequestResponseWithDetails> getAllMembers() {
         Map<String,Object> response = new HashMap<>();;
+        List<Member> members = memberService.getAllMembers();
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        for(Member member:members){
+            memberDtoList.add(memberDtoConverter.convertMemberTODto(member));
+        }
         requestResponseWithDetails.setMessage("Members retrieved successfully");
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
-        response.put("members",memberService.getAllMembers());
+        response.put("members",memberDtoList);
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
