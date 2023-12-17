@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -40,11 +38,17 @@ public class LevelController {
     }
     @GetMapping("/levels")
     public ResponseEntity<RequestResponseWithDetails> getAllLevels() {
+       List<Level> levels  = levelService.getAllLevels();
+       List<LevelDto> levelsDto = new ArrayList<>();
+       for(Level level:levels){
+           levelsDto.add(levelDtoConverter.convertLevelTODto(level));
+       }
+        Map<String,Object> response = new HashMap<>();
+        response.put("levels",levelsDto);
         requestResponseWithDetails.setMessage("Levels retrieved successfully");
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
-        Map<String,Object> response = new HashMap<>();
-        response.put("levels",levelService.getAllLevels());
+
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
