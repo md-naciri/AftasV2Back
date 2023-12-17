@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +48,14 @@ public class CompetitionController {
 
         Map<String,Object> response = new HashMap<>();
         List<Competition> competitions = competitionService.getAllCompetitions();
+        List<CompetitionDto> competitionDtoList  = new ArrayList<>();
+        for(Competition competition: competitions){
+            competitionDtoList.add(competitionDtoConverter.convertCompetitionTODto(competition));
+        }
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("competitions retrieved successfully");
         requestResponseWithDetails.setStatus("200");
-        response.put("Competitions",competitions);
+        response.put("Competitions",competitionDtoList);
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
