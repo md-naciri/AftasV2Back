@@ -56,4 +56,14 @@ public class MemberController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+    @GetMapping("/members/{pageNumber}/{pageSize}")
+    public ResponseEntity<RequestResponseWithDetails> getMemberById(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
+        Map<String,Object> response = new HashMap<>();
+        requestResponseWithDetails.setMessage("Member retrieved successfully");
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        response.put("members",memberService.getAllMembersWithPagination(pageNumber,pageSize));
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
 }

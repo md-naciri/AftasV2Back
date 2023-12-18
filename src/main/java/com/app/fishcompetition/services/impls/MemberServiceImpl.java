@@ -7,6 +7,9 @@ import com.app.fishcompetition.repositories.MemberRepository;
 import com.app.fishcompetition.services.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,6 +25,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
+    }
+
+    @Override
+    public Page<Member> getAllMembersWithPagination(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        return memberRepository.findAll(pageable);
     }
 
     @Override
