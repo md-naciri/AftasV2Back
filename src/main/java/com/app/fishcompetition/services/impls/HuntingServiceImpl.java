@@ -33,7 +33,7 @@ public class HuntingServiceImpl implements HuntingService {
     private final RankingServiceImpl rankingService;
     @Override
     public List<Hunting> getAllHunting() {
-         return  huntingRepository.findAll();
+        return  huntingRepository.findAll();
     }
 
     @Override
@@ -55,18 +55,15 @@ public class HuntingServiceImpl implements HuntingService {
             throw new CompetitionTimeException("Competition is not started yet");
         }else if(isCurrentTimeAfterCompetitionTime(getCompetitionById(hunting.getCompetition().getId()).getEndTime().toLocalTime())){
             throw new CompetitionTimeException("Competition time is over");
-        }else if(checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
-            throw new HuntingAllReadyExistException("Member that you entered not belong to this competition");
+        }else if(!checkIfMemberAlreadyRanked(hunting.getMember().getId(),hunting.getCompetition().getId())){
+            throw new HuntingAllReadyExistException("The member not assigned to the competition  that you chose");
         }else {
             if(weight < getFishAverageWeight(hunting.getFish().getId())){
                 throw new AverageWeightException("Weight that you entered is less than average weight of fish");
             } else {
                 Optional<Hunting> huntingOptional = getHuntingByMemberIdAndFishIdAndCompetitionId(hunting.getMember().getId(),hunting.getFish().getId(),hunting.getCompetition().getId());
-
                 Hunting savedHunting;
-
                 Optional<Ranking> ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId());
-                System.out.println(ranking);
                 if(!ranking.isPresent()){
                     throw new NoSuchElementException("The member not assigned to the competition  that you chose");
                 }else{
@@ -77,7 +74,7 @@ public class HuntingServiceImpl implements HuntingService {
                     } else {
                         hunting.setNumberOfFish(1);
                         UUID fishId = hunting.getFish().getId();
-                        Fish fish = fishService.getFishById(fishId).orElseThrow(() -> new NoSuchElementException("Fish that you entered does not exist"));
+                        Fish fish = fishService.getFishById(fishId).orElseThrow(() -> new NoSuchElementException("Fish that you entered  not exist"));
                         hunting.setFish(fish);
                         savedHunting = huntingRepository.save(hunting);
                     }

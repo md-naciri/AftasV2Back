@@ -1,9 +1,6 @@
 package com.app.fishcompetition.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope = Competition.class)
 public class Competition {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     private UUID id;
@@ -43,9 +40,4 @@ public class Competition {
 
     private Double amount;
 
-    @OneToMany(mappedBy = "competition")
-    private List<Ranking> rankings;
-
-    @OneToMany(mappedBy = "competition")
-    private List<Hunting> huntings;
 }

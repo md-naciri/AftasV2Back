@@ -18,7 +18,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope = Level.class)
 public class Level {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -36,6 +35,4 @@ public class Level {
     @Column(unique = true)
     private int points;
 
-    @OneToMany(mappedBy = "level")
-    private List<Fish> fishes;
 }

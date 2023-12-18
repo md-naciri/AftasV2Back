@@ -12,5 +12,5 @@ public class RequestResponseWithDetails {
     private LocalDateTime timestamp;
     private String message;
     private String status;
-    private Map<String,Object> details;
+    private Map<String,?> details;
 }

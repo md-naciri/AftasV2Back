@@ -1,10 +1,7 @@
 package com.app.fishcompetition.model.entity;
 
 import com.app.fishcompetition.enums.IdentityDocumentType;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,10 +37,4 @@ public class Member {
 
     @Column(unique = true)
     private String identityNumber;
-
-    @OneToMany( mappedBy = "member")
-    private List<Ranking> rankings;
-
-    @OneToMany(mappedBy = "member")
-    private List<Hunting> huntings;
 }

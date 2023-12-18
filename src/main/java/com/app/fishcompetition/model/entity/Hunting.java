@@ -1,9 +1,6 @@
 package com.app.fishcompetition.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope = Hunting.class)
 public class Hunting {
 
     @Id
@@ -26,11 +22,14 @@ public class Hunting {
     private int numberOfFish;
 
     @ManyToOne
+    @JoinColumn(name="member_id")
     private Member member;
 
     @ManyToOne
+    @JoinColumn(name="fish_id")
     private Fish fish;
 
     @ManyToOne
+    @JoinColumn(name="competition_id")
     private Competition competition;
 }

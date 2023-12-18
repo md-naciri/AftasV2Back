@@ -16,7 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope = Fish.class)
 public class Fish {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -27,9 +26,8 @@ public class Fish {
 
     private double averageWeight;
 
-    @OneToMany( mappedBy = "fish")
-    private List<Hunting> huntings;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name ="level_id")
     private Level level;
 }

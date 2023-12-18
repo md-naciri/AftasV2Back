@@ -39,7 +39,7 @@ public class RankingServiceImpl  implements RankingService {
     @Override
     public Ranking addRanking(Ranking ranking) {
            if(!checkIfCompetitionIsAvailableToJoin(ranking.getCompetition().getId())){
-                throw  new CompetitionNotAvailableException("competition is not available  is still 24h to start");
+                throw  new CompetitionNotAvailableException("competition not available to join ");
            }else  if(!checkIfMemberExist(ranking.getMember().getId())){
                 throw  new NoSuchElementException("member not exist");
             }else if (!checkIfCompetitionExist(ranking.getCompetition().getId())){

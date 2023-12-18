@@ -27,8 +27,10 @@ public class Ranking {
     private int score;
 
     @ManyToOne
+    @JoinColumn(name="member_id")
     private Member member;
 
     @ManyToOne
+    @JoinColumn(name="competition_id")
     private Competition competition;
 }
