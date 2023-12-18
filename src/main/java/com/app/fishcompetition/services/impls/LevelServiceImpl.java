@@ -6,6 +6,9 @@ import com.app.fishcompetition.repositories.LevelRepository;
 import com.app.fishcompetition.services.LevelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +26,11 @@ public class LevelServiceImpl implements LevelService {
         return levelRepository.findAll();
     }
 
+    @Override
+    public Page<Level> getAllLevelsWithPagination(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return levelRepository.findAll(pageable);
+    }
     @Override
     public Optional<Level> getLevelById(UUID levelId) {
         return levelRepository.findById(levelId);

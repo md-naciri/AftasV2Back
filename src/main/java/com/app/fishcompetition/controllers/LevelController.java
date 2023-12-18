@@ -52,6 +52,19 @@ public class LevelController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+    @GetMapping("/levels/{pageNumber}/{pageSize}")
+    public ResponseEntity<RequestResponseWithDetails> getAllLevelsWithPagination(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
+
+        Map<String,Object> response = new HashMap<>();
+
+        response.put("levels",levelService.getAllLevelsWithPagination(pageNumber,pageSize));
+        requestResponseWithDetails.setMessage("Levels retrieved successfully");
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setDetails(response);
+
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
     @DeleteMapping("/level/{id}")
     public ResponseEntity<RequestResponseWithoutDetails> deleteLevel(@PathVariable("id") UUID id) {
         levelService.deleteLevel(id);
