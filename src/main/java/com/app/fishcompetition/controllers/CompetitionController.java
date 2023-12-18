@@ -59,4 +59,14 @@ public class CompetitionController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+    @GetMapping("/competition/{status}")
+    public ResponseEntity<RequestResponseWithDetails> getCompetitionByStatus(@PathVariable String status)  {
+        Map<String,Object> response = new HashMap<>();
+        response.put("competiitons",competitionService.getCompetitionByStatus(status));
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setMessage("competitions retrieved successfully");
+        requestResponseWithDetails.setDetails(response);
+        return  ResponseEntity.ok().body(requestResponseWithDetails);
+    }
 }

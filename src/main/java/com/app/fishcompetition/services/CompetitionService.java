@@ -13,7 +13,9 @@ import java.util.UUID;
 public interface CompetitionService {
     List<Competition> getAllCompetitions();
 
-    Optional<Competition> getCompetitionById(UUID competitionId);
+     List<Competition> getCompetitionByStatus(String status);
+
+     Optional<Competition> getCompetitionById(UUID competitionId);
 
     List<Competition> getCompetitionByDate(Date date);
     Competition addCompetition(Competition competition) ;

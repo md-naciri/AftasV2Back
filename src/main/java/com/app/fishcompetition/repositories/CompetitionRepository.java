@@ -14,4 +14,10 @@ public interface CompetitionRepository extends JpaRepository<Competition, UUID> 
 
     @Query("SELECT c FROM Competition c WHERE c.date = ?1")
     List<Competition> findByDate(Date date);
+
+    @Query("SELECT c FROM Competition c WHERE c.date < ?1")
+    List<Competition> findByDateBefore(Date date);
+
+    @Query("SELECT c FROM Competition c WHERE c.date >= ?1")
+    List<Competition> findByDateAfter(Date date);
 }

@@ -2,6 +2,7 @@ package com.app.fishcompetition.services.impls;
 
 import com.app.fishcompetition.common.exceptions.custom.CompetitionNotAvailableException;
 import com.app.fishcompetition.common.exceptions.custom.MemberCompetitionAlreadyExistException;
+import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Member;
 import com.app.fishcompetition.model.entity.Ranking;
@@ -11,8 +12,11 @@ import com.app.fishcompetition.services.MemberService;
 import com.app.fishcompetition.services.RankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -22,6 +26,7 @@ public class RankingServiceImpl  implements RankingService {
     private final RankingRepository rankingRepository;
     private final MemberService memberService;
     private final CompetitionService competitionService;
+    private final RequestResponseWithDetails requestResponseWithDetails;
     @Override
     public List<Ranking> getRankings() {
         return rankingRepository.findAll();
@@ -54,6 +59,10 @@ public class RankingServiceImpl  implements RankingService {
                 competitionService.updateCompetition(competition.getId(), competition);
                 return rankingRepository.save(ranking);
             }
+    }
+    public List<Ranking> getRankingsByCompetitionId(UUID competitionId) {
+        competitionService.getCompetitionById(competitionId).orElseThrow(() -> new NoSuchElementException("Competition not found"));
+        return rankingRepository.findAllByCompetitionIdOrderByScoreDesc(competitionId);
     }
 
     @Override

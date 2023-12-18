@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/")
@@ -47,5 +49,17 @@ public class RankingController {
         response.put("Rankings",rankingService.getRankings());
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
+    @GetMapping("/rankings/{competitionId}")
+    public ResponseEntity<RequestResponseWithDetails> getRankingsByCompetitionId(@PathVariable  UUID competitionId){
+        Map<String,Object> response = new HashMap<String, Object>();
+        List<Ranking> rankings = rankingService.getRankingsByCompetitionId(competitionId);
+        response.put("status", "success");
+        response.put("rankings", rankings);
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setMessage("Rankings retrieved successfully");
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok(requestResponseWithDetails);
     }
 }

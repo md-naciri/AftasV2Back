@@ -2,7 +2,10 @@ package com.app.fishcompetition.controllers;
 
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
+import com.app.fishcompetition.mapper.CompetitionDtoConverter;
+import com.app.fishcompetition.mapper.FishDtoConverter;
 import com.app.fishcompetition.mapper.HuntingDtoConverter;
+import com.app.fishcompetition.mapper.MemberDtoConverter;
 import com.app.fishcompetition.model.dto.HuntingDto;
 import com.app.fishcompetition.model.entity.*;
 import com.app.fishcompetition.services.HuntingService;
@@ -30,6 +33,9 @@ public class HuntingController {
     private final RequestResponseWithDetails   requestResponseWithDetails;
     private final HuntingDtoConverter huntingDtoConverter;
     private final HuntingServiceImpl huntingServiceImpl;
+    private  final MemberDtoConverter memberDtoConverter;
+    private final CompetitionDtoConverter competitionDtoConverter;
+    private final FishDtoConverter fishDtoConverter;
     @PostMapping("/hunting")
     public ResponseEntity<RequestResponseWithDetails>addHunting(@RequestBody @Valid HuntingDto huntingDto){
         Map<String,Object> response = new HashMap<>();
@@ -60,9 +66,9 @@ public class HuntingController {
         Map<String, Object> huntingData = new HashMap<>();
         huntingData.put("id", hunting.getId().toString());
         huntingData.put("numberOfFish", hunting.getNumberOfFish());
-        huntingData.put("member", convertMemberToMap(hunting.getMember()));
-        huntingData.put("fish", convertFishToMap(hunting.getFish()));
-        huntingData.put("competition", convertMemberToMap(hunting.getCompetition()));
+        huntingData.put("member", memberDtoConverter.convertMemberTODto(hunting.getMember()));
+        huntingData.put("fish", fishDtoConverter.convertFishTODto(hunting.getFish()));
+        huntingData.put("competition", competitionDtoConverter.convertCompetitionTODto(hunting.getCompetition()));
         return huntingData;
     }
     private Map<String, Object> convertMemberToMap(Member member) {

@@ -16,10 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -68,6 +65,19 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public void deleteCompetition(UUID competitionId) {
 
+    }
+
+    public List<Competition> getCompetitionByStatus(String status){
+          List<Competition> competitionList = new ArrayList<>();
+          if(status.equals("finished")){
+              competitionList =  competitionRepository.findByDateBefore(new Date());
+              System.out.println(new Date());
+          }
+          if(status.equals("opened")){
+              System.out.println(new Date());
+             competitionList = competitionRepository.findByDateAfter(new Date());
+          }
+          return competitionList;
     }
     public boolean checkIfDateIsAvailable(Date date){
         LocalDate givenDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

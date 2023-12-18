@@ -15,4 +15,6 @@ public interface RankingService {
     void updateRanking(UUID id, Ranking ranking);
 
     void deleteRanking(UUID id);
+
+    List<Ranking> getRankingsByCompetitionId(UUID competitionId);
 }
