@@ -8,6 +8,9 @@ import com.app.fishcompetition.repositories.CompetitionRepository;
 import com.app.fishcompetition.services.CompetitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -27,6 +30,12 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public List<Competition> getAllCompetitions() {
          return competitionRepository.findAll();
+    }
+
+    @Override
+    public Page<Competition> getAllCompetitionsWithPagination(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        return competitionRepository.findAll(pageable);
     }
 
     @Override
@@ -71,10 +80,8 @@ public class CompetitionServiceImpl implements CompetitionService {
           List<Competition> competitionList = new ArrayList<>();
           if(status.equals("finished")){
               competitionList =  competitionRepository.findByDateBefore(new Date());
-              System.out.println(new Date());
           }
           if(status.equals("opened")){
-              System.out.println(new Date());
              competitionList = competitionRepository.findByDateAfter(new Date());
           }
           return competitionList;

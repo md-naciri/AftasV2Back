@@ -2,6 +2,7 @@ package com.app.fishcompetition.services;
 
 import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.model.entity.Competition;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public interface CompetitionService {
 
      List<Competition> getCompetitionByStatus(String status);
 
+    Page<Competition> getAllCompetitionsWithPagination(int pageNumber, int pageSize);
      Optional<Competition> getCompetitionById(UUID competitionId);
 
     List<Competition> getCompetitionByDate(Date date);

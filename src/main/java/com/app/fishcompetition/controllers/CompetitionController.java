@@ -43,6 +43,19 @@ public class CompetitionController {
         return ResponseEntity.ok().body(requestResponseWithDetails);
 
     }
+    @GetMapping("/competition/{pageNumber}/{pageSize}")
+    public ResponseEntity<RequestResponseWithDetails> getAllCompetitions(@PathVariable int pageNumber , @PathVariable int pageSize)  {
+
+        Map<String,Object> response = new HashMap<>();
+
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("competitions retrieved successfully");
+        requestResponseWithDetails.setStatus("200");
+        response.put("Competitions",competitionService.getAllCompetitionsWithPagination(pageNumber,pageSize));
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
+
     @GetMapping("/competitions")
     public ResponseEntity<RequestResponseWithDetails> getAllCompetitions()  {
 
@@ -62,7 +75,7 @@ public class CompetitionController {
     @GetMapping("/competition/{status}")
     public ResponseEntity<RequestResponseWithDetails> getCompetitionByStatus(@PathVariable String status)  {
         Map<String,Object> response = new HashMap<>();
-        response.put("competiitons",competitionService.getCompetitionByStatus(status));
+        response.put("competitions",competitionService.getCompetitionByStatus(status));
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("competitions retrieved successfully");
