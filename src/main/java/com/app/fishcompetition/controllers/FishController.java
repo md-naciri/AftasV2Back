@@ -53,6 +53,16 @@ public class FishController {
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+    @GetMapping("/fishes/{pageNumber}/{pageSize}")
+    public ResponseEntity<RequestResponseWithDetails> getFishWithPagination(@PathVariable int pageNumber, @PathVariable int pageSize) {
+        Map<String,Object> response = new HashMap<>();
+        response.put("fishes",fishService.getAllFishWithPagination(pageNumber,pageSize));
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setMessage("Fish retrieved successfully");
+        requestResponseWithDetails.setStatus("200");
+        requestResponseWithDetails.setDetails(response);
+        return ResponseEntity.ok().body(requestResponseWithDetails);
+    }
     @DeleteMapping("/fish/{id}")
     public ResponseEntity<RequestResponseWithoutDetails> deleteFish(@PathVariable  UUID id) {
         fishService.deleteFish(id);

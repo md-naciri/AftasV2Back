@@ -7,6 +7,9 @@ import com.app.fishcompetition.services.FishService;
 import com.app.fishcompetition.services.LevelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +28,11 @@ public class FishServiceImpl implements FishService {
         return fishRepository.findAll();
     }
 
+    @Override
+    public Page<Fish> getAllFishWithPagination(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        return fishRepository.findAll(pageable);
+    }
     @Override
     public Optional<Fish> getFishById(UUID fishId) {
         return fishRepository.findById(fishId);
