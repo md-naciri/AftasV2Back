@@ -4,6 +4,7 @@ import com.app.fishcompetition.common.exceptions.custom.CompetitionTimeException
 import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.model.entity.Competition;
+import com.app.fishcompetition.model.entity.Fish;
 import com.app.fishcompetition.repositories.CompetitionRepository;
 import com.app.fishcompetition.services.CompetitionService;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,12 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public void deleteCompetition(UUID competitionId) {
-
+        Optional<Competition> competitionToDelete = getCompetitionById(competitionId);
+        if(competitionToDelete.isPresent()) {
+            competitionRepository.delete(competitionToDelete.get());
+        } else {
+            throw new NoSuchElementException("fish with id " + competitionId + " does not exist");
+        }
     }
 
     public List<Competition> getCompetitionByStatus(String status){

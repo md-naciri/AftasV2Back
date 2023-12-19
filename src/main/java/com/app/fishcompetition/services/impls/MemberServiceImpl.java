@@ -12,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -58,7 +55,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMember(UUID memberId) {
-
+        Optional<Member> memberToDelete = getMemberById(memberId);
+        if(memberToDelete.isPresent()) {
+            memberRepository.delete(memberToDelete.get());
+        } else {
+            throw new NoSuchElementException("fish with id " + memberId + " does not exist");
+        }
     }
     public boolean checkValidateAccessDate(Date accessDate){
         return accessDate.equals(new Date());
