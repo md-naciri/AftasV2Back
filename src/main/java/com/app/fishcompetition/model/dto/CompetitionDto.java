@@ -1,8 +1,6 @@
 package com.app.fishcompetition.model.dto;
 
-import com.app.fishcompetition.model.entity.Hunting;
-import com.app.fishcompetition.model.entity.Ranking;
-import jakarta.persistence.OneToMany;
+
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +9,6 @@ import lombok.Data;
 
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,7 +16,6 @@ public class CompetitionDto {
 
     private UUID id;
 
-    @NotBlank(message = "Code cannot be blank")
     private String code;
 
     @NotNull(message = "Date cannot be null")

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,4 +31,7 @@ public class Fish {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name ="level_id")
     private Level level;
+
+    @OneToMany(mappedBy = "fish")
+    private List<Hunting> huntings ;
 }

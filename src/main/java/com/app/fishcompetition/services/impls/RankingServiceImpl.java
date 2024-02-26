@@ -6,6 +6,7 @@ import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.model.entity.Competition;
 import com.app.fishcompetition.model.entity.Member;
 import com.app.fishcompetition.model.entity.Ranking;
+import com.app.fishcompetition.model.entity.RankingKey;
 import com.app.fishcompetition.repositories.RankingRepository;
 import com.app.fishcompetition.services.CompetitionService;
 import com.app.fishcompetition.services.MemberService;
@@ -33,12 +34,12 @@ public class RankingServiceImpl  implements RankingService {
     }
 
     @Override
-    public Optional<Ranking> getRankingById(UUID id) {
+    public Optional<Ranking> getRankingById(RankingKey id) {
         return rankingRepository.findById(id);
     }
 
-    public Optional<Ranking> getRankingByMemberIdAndCompetitionId(UUID memberId, UUID competitionId) {
-        return rankingRepository.findByMemberIdAndCompetitionId(memberId, competitionId);
+    public Optional<Ranking> getRankingByMemberIdAndCompetitionId(RankingKey id) {
+        return rankingRepository.findByMemberIdAndCompetitionId(id.getMember_id(),id.getCompetition_id());
     }
 
     @Override
@@ -52,6 +53,8 @@ public class RankingServiceImpl  implements RankingService {
             }else if (checkIfUserAlreadyRankedWithSameCompetition(ranking.getMember().getId(), ranking.getCompetition().getId())){
                 throw  new MemberCompetitionAlreadyExistException("member already ranked with same competition");
             }else{
+               RankingKey rankingKey = new RankingKey(ranking.getMember().getId(), ranking.getCompetition().getId());
+                ranking.setId(rankingKey);
                 ranking.setRank(1);
                 ranking.setScore(0);
                 Competition competition = competitionService.getCompetitionById(ranking.getCompetition().getId()).get();
@@ -62,16 +65,16 @@ public class RankingServiceImpl  implements RankingService {
     }
     public List<Ranking> getRankingsByCompetitionId(UUID competitionId) {
         competitionService.getCompetitionById(competitionId).orElseThrow(() -> new NoSuchElementException("Competition not found"));
-        return rankingRepository.findAllByCompetitionIdOrderByScoreDesc(competitionId);
+        return rankingRepository.findAllByCompetitionIdOrderByRankAsc(competitionId);
     }
 
     @Override
-    public void updateRanking(UUID rankingId, Ranking updatedRanking) {
+    public void updateRanking(RankingKey rankingId, Ranking updatedRanking) {
         Ranking ranking = rankingRepository.findById(rankingId)
                 .orElseThrow(() -> new NoSuchElementException("Ranking not found"));
 
         ranking.setScore(updatedRanking.getScore());
-
+        rankingRepository.save(ranking);
         List<Ranking> rankings = rankingRepository.findAllByCompetitionIdOrderByScoreDesc(ranking.getCompetition().getId());
 
         for (int i = 0; i < rankings.size(); i++) {

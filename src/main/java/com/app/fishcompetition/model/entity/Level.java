@@ -35,4 +35,6 @@ public class Level {
     @Column(unique = true)
     private int points;
 
+    @OneToMany(mappedBy = "level")
+    private List<Fish> fishes;
 }

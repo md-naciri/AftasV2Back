@@ -1,7 +1,7 @@
 # Database configuration
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/fish_competition
+    url: jdbc:postgresql://localhost:5432/fish_competition2
     username: postgres
     password: yassine
 
@@ -11,9 +11,52 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto:  update
       show-sql: true
 
+  # Mail configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ahmed.yassin.elhamzaoui2019@gmail.com
+    password: hswxtybmtwpxjriv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   # Liquibase configuration
   liquibase:
     change-log: classpath:db/changelog-master.xml
+
+ # security config
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 393516152554-e8sdef58mfnrhlr6psjjj0mn28rgs7r6.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: "http://localhost:8080/api/v1/oauth2/callback"
+            scope:
+              - email
+              - profile
+          facebook:
+            client-id: 720301219871173
+            client-secret: 4cedb664b19d4975e3c1e4ccb06e8dc5
+            redirectUri: "http://localhost:8080/api/v1/oauth2/callback"
+            scope:
+              - email
+              - public_profile
+          github:
+            clientId: d3e47fc2ddd966fa4352
+            clientSecret: 3bc0f6b8332f93076354c2a5bada2f5a05aea60d
+            redirectUri: "{baseUrl}/api/v1/oauth2/callback/{registrationId}"
+            scope:
+              - user:email
+              - read:user
+
+token:
+  signing:
+    key: 413F4428472B4B6250655368566D5970337336763979244226452948404D6351

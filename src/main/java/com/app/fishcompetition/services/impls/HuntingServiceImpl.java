@@ -3,10 +3,7 @@ package com.app.fishcompetition.services.impls;
 import com.app.fishcompetition.common.exceptions.custom.AverageWeightException;
 import com.app.fishcompetition.common.exceptions.custom.CompetitionTimeException;
 import com.app.fishcompetition.common.exceptions.custom.HuntingAllReadyExistException;
-import com.app.fishcompetition.model.entity.Competition;
-import com.app.fishcompetition.model.entity.Fish;
-import com.app.fishcompetition.model.entity.Hunting;
-import com.app.fishcompetition.model.entity.Ranking;
+import com.app.fishcompetition.model.entity.*;
 import com.app.fishcompetition.repositories.HuntingRepository;
 import com.app.fishcompetition.services.CompetitionService;
 import com.app.fishcompetition.services.FishService;
@@ -63,7 +60,7 @@ public class HuntingServiceImpl implements HuntingService {
             } else {
                 Optional<Hunting> huntingOptional = getHuntingByMemberIdAndFishIdAndCompetitionId(hunting.getMember().getId(),hunting.getFish().getId(),hunting.getCompetition().getId());
                 Hunting savedHunting;
-                Optional<Ranking> ranking = rankingService.getRankingByMemberIdAndCompetitionId(hunting.getMember().getId(),hunting.getCompetition().getId());
+                Optional<Ranking> ranking = rankingService.getRankingByMemberIdAndCompetitionId(RankingKey.builder().member_id(hunting.getMember().getId()).competition_id(hunting.getCompetition().getId()).build());
                 if(!ranking.isPresent()){
                     throw new NoSuchElementException("The member not assigned to the competition  that you chose");
                 }else{
@@ -130,6 +127,7 @@ public class HuntingServiceImpl implements HuntingService {
          }
       return score;
    }
+   @Override
    public List<Hunting> getAllHuntingOfMemberInCompetition(UUID memberId, UUID competitionId){
       return huntingRepository.getAllHuntingOfSameCompetitionAndSameMember(memberId,competitionId);
    }

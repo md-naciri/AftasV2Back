@@ -17,4 +17,5 @@ public interface HuntingService {
     Hunting updateHunting(UUID huntingId, Hunting hunting);
 
     void deleteHunting(UUID huntingId);
+    List<Hunting> getAllHuntingOfMemberInCompetition(UUID memberId,UUID competitionId);
 }

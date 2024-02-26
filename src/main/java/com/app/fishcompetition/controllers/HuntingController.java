@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,13 +27,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@PreAuthorize("hasRole('ROLE_JURY')")
 public class HuntingController {
 
     private final HuntingService huntingService;
-    private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     private final RequestResponseWithDetails   requestResponseWithDetails;
     private final HuntingDtoConverter huntingDtoConverter;
-    private final HuntingServiceImpl huntingServiceImpl;
     private  final MemberDtoConverter memberDtoConverter;
     private final CompetitionDtoConverter competitionDtoConverter;
     private final FishDtoConverter fishDtoConverter;
@@ -43,7 +43,7 @@ public class HuntingController {
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("Hunting added successfully");
-        response.put("hunting",huntingAdded);
+        response.put("hunting", huntingDtoConverter.convertToDto(huntingAdded));
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
@@ -71,46 +71,14 @@ public class HuntingController {
         huntingData.put("competition", competitionDtoConverter.convertCompetitionTODto(hunting.getCompetition()));
         return huntingData;
     }
-    private Map<String, Object> convertMemberToMap(Member member) {
-        Map<String, Object> memberData = new HashMap<>();
-        memberData.put("id", member.getId().toString());
-        memberData.put("firstName", member.getFirstName());
-        memberData.put("lastName", member.getLastName());
-        memberData.put("identityNumber", member.getIdentityNumber());
-        memberData.put("identityDocumentType", member.getIdentityDocumentType().toString());
-        memberData.put("natitonality", member.getNationality());
-        return memberData;
-    }
-    private Map<String, Object> convertFishToMap(Fish fish) {
-        Map<String,Object> fishData = new HashMap<>();
-        fishData.put("id",fish.getId().toString());
-        fishData.put("name",fish.getName());
-        fishData.put("level",convertLevelToMap(fish.getLevel()));
-        fishData.put("average weight",fish.getAverageWeight());
-        return fishData;
-    }
-    public Map<String,Object> convertLevelToMap(Level level){
-        Map<String,Object> levelData = new HashMap<>();
-        levelData.put("id",level.getId().toString());
-        levelData.put("level",level.getLevel());
-        levelData.put("code",level.getCode());
-        levelData.put("points",level.getPoints());
-        return levelData;
-    }
-    private Map<String, Object> convertMemberToMap(Competition competition) {
-        Map<String, Object> competitionData = new HashMap<>();
-        competitionData.put("id", competition.getId().toString());
-        competitionData.put("code", competition.getCode());
-        competitionData.put("startDate", competition.getStartTime());
-        competitionData.put("endDate", competition.getEndTime());
-        competitionData.put("location", competition.getLocation());
-        competitionData.put("date", competition.getDate());
-        return competitionData;
-    }
+
+
+
+
     @GetMapping("/hunting/{huntingId}")
     public ResponseEntity<RequestResponseWithDetails> getHuntingById(@PathVariable("huntingId") UUID huntingId){
         Map<String,Object> response = new HashMap<>();
-        response.put("hunting",huntingService.getHuntingById(huntingId));
+        response.put("hunting",huntingDtoConverter.convertToDto(huntingService.getHuntingById(huntingId).get()));
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("Hunting retrieved successfully");
@@ -121,8 +89,10 @@ public class HuntingController {
     @GetMapping("/hunting/{memberId}/{competitionId}")
     public ResponseEntity<RequestResponseWithDetails> getHuntingById(@PathVariable UUID memberId,@PathVariable UUID competitionId){
         Map<String,Object> response = new HashMap<>();
-
-        response.put("hunting",huntingServiceImpl.getAllHuntingOfMemberInCompetition(memberId,competitionId).get(0).getFish().getLevel().getPoints() );
+        Hunting hunting = huntingService.getAllHuntingOfMemberInCompetition(memberId,competitionId).get(0);
+        HuntingDto huntingDto = huntingDtoConverter.convertToDto(hunting);
+        response.put("hunting", huntingDto);
+        response.put("hunting", huntingService.getAllHuntingOfMemberInCompetition(memberId,competitionId).get(0).getFish().getLevel().getPoints());
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("Hunting retrieved successfully");

@@ -1,8 +1,6 @@
 package com.app.fishcompetition.controllers;
 
-import com.app.fishcompetition.common.exceptions.custom.DateNotAvailableException;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
-import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
 import com.app.fishcompetition.mapper.CompetitionDtoConverter;
 import com.app.fishcompetition.model.dto.CompetitionDto;
 import com.app.fishcompetition.model.entity.Competition;
@@ -10,8 +8,10 @@ import com.app.fishcompetition.services.CompetitionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -26,15 +27,17 @@ import java.util.Map;
 public class CompetitionController {
 
     private final CompetitionService competitionService;
-    private final RequestResponseWithoutDetails requestResponseWithoutDetails;
     private final RequestResponseWithDetails  requestResponseWithDetails ;
     private final CompetitionDtoConverter competitionDtoConverter;
     private ObjectMapper mapper;
+    private final ModelMapper modelMapper;
+
     @PostMapping("/competition")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public ResponseEntity<RequestResponseWithDetails> addCompetition(@Valid @RequestBody CompetitionDto competitionDto)  {
 
         Map<String,Object> response = new HashMap<>();
-        Competition competition = competitionService.addCompetition(competitionDtoConverter.convertDtoTOCompetition(competitionDto));
+        CompetitionDto competition = modelMapper.map(competitionService.addCompetition(competitionDtoConverter.convertDtoTOCompetition(competitionDto)), CompetitionDto.class);
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("competition added successfully");
         requestResponseWithDetails.setStatus("200");
@@ -44,6 +47,7 @@ public class CompetitionController {
 
     }
     @GetMapping("/competition/{pageNumber}/{pageSize}")
+    @PreAuthorize("hasRole('ROLE_ADHERENT')")
     public ResponseEntity<RequestResponseWithDetails> getAllCompetitions(@PathVariable int pageNumber , @PathVariable int pageSize)  {
 
         Map<String,Object> response = new HashMap<>();
@@ -51,31 +55,36 @@ public class CompetitionController {
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("competitions retrieved successfully");
         requestResponseWithDetails.setStatus("200");
-        response.put("Competitions",competitionService.getAllCompetitionsWithPagination(pageNumber,pageSize));
+        response.put("Competitions",competitionService.getAllCompetitionsWithPagination(pageNumber,pageSize).stream()
+                .map(competitionDtoConverter::convertCompetitionTODto)
+                .collect(Collectors.toList()));
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
 
     @GetMapping("/competitions")
+    @PreAuthorize("hasRole('ROLE_ADHERENT')")
     public ResponseEntity<RequestResponseWithDetails> getAllCompetitions()  {
 
-        Map<String,Object> response = new HashMap<>();
         List<Competition> competitions = competitionService.getAllCompetitions();
-        List<CompetitionDto> competitionDtoList  = new ArrayList<>();
-        for(Competition competition: competitions){
-            competitionDtoList.add(competitionDtoConverter.convertCompetitionTODto(competition));
-        }
+        Map<String,Object> response = new HashMap<>();
+        List<CompetitionDto> competitionData = competitions.stream()
+                .map(competitionDtoConverter::convertCompetitionTODto)
+                .collect(Collectors.toList());
+        response.put("Competitions", competitionData);
+
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setMessage("competitions retrieved successfully");
         requestResponseWithDetails.setStatus("200");
-        response.put("Competitions",competitionDtoList);
         requestResponseWithDetails.setDetails(response);
         return ResponseEntity.ok().body(requestResponseWithDetails);
     }
+
     @GetMapping("/competition/{status}")
+    @PreAuthorize("hasRole('ROLE_ADHERENT')")
     public ResponseEntity<RequestResponseWithDetails> getCompetitionByStatus(@PathVariable String status)  {
         Map<String,Object> response = new HashMap<>();
-        response.put("competitions",competitionService.getCompetitionByStatus(status));
+        response.put("competitions",competitionService.getCompetitionByStatus(status).stream().map(competitionDtoConverter::convertCompetitionTODto).collect(Collectors.toList()));
         requestResponseWithDetails.setTimestamp(LocalDateTime.now());
         requestResponseWithDetails.setStatus("200");
         requestResponseWithDetails.setMessage("competitions retrieved successfully");

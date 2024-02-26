@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -63,6 +64,9 @@ public class CompetitionServiceImpl implements CompetitionService {
            throw  new CompetitionTimeException("competition time is not valid :  competition time should be at least 1 hour");
        }
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");;
+        String date = simpleDateFormat.format(competition.getDate());
+        competition.setCode(competition.getLocation().substring(0,3) + date);
         competition.setNumberOfParticipants(0);
         return competitionRepository.save(competition);
     }

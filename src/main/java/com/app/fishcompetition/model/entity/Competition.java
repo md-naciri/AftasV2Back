@@ -40,4 +40,10 @@ public class Competition {
 
     private Double amount;
 
+    @OneToMany(mappedBy = "competition")
+    private List<Ranking> rankings;
+
+    @OneToMany(mappedBy = "competition")
+    private List<Hunting> huntings;
+
 }

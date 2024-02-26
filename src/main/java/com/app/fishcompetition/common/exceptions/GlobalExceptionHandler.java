@@ -3,6 +3,7 @@ package com.app.fishcompetition.common.exceptions;
 import com.app.fishcompetition.common.exceptions.custom.*;
 import com.app.fishcompetition.common.responses.RequestResponseWithDetails;
 import com.app.fishcompetition.common.responses.RequestResponseWithoutDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -124,5 +125,52 @@ public class GlobalExceptionHandler {
         requestResponseWithoutDetails.setStatus("422");
         requestResponseWithoutDetails.setMessage(averageWeightException.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(requestResponseWithoutDetails);
+    }
+    @ExceptionHandler(UserAllReadyExistException.class)
+    public ResponseEntity<RequestResponseWithDetails> handleUserAlreadyExistException(UserAllReadyExistException e){
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("404");
+        requestResponseWithDetails.setMessage("User already exist");
+        Map<String,Object> errors = new HashMap<>();
+        errors.put("Error", e.getMessage());
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(requestResponseWithDetails);
+    }
+    @ExceptionHandler(EmailVerificationException.class)
+    public ResponseEntity<RequestResponseWithDetails> handleEmailVerificationException(EmailVerificationException e){
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("406");
+        requestResponseWithDetails.setMessage("Email verification error");
+        Map<String,Object> errors = new HashMap<>();
+        errors.put("Error", e.getMessage());
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(requestResponseWithDetails);
+    }
+    @ExceptionHandler(InvalidOauth2Exception.class)
+    public ResponseEntity<RequestResponseWithoutDetails> handleInvalidOauth2Exception(InvalidOauth2Exception e){
+        requestResponseWithoutDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithoutDetails.setStatus("400");
+        requestResponseWithoutDetails.setMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(requestResponseWithoutDetails);
+    }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<RequestResponseWithDetails> handleBadRequestException(BadRequestException e){
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("400");
+        requestResponseWithDetails.setMessage("bad request");
+        Map<String,Object> errors = new HashMap<>();
+        errors.put("Error", e.getMessage());
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(requestResponseWithDetails);
+    }
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<RequestResponseWithDetails> handleExpiredJwtException(ExpiredJwtException e) {
+        requestResponseWithDetails.setTimestamp(LocalDateTime.now());
+        requestResponseWithDetails.setStatus("400");
+        requestResponseWithDetails.setMessage("Your session has expired. Please log in again.");
+        Map<String,Object> errors = new HashMap<>();
+        errors.put("Error", e.getMessage());
+        requestResponseWithDetails.setDetails(errors);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(requestResponseWithDetails);
     }
 }
